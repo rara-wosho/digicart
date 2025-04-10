@@ -1,3 +1,11 @@
+<?php
+
+  include "includes/includes.php";
+
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -98,7 +106,13 @@
             </li>
           </ul>
           <div class="d-flex justify-content-center ms-3">
-            <a href="signin.html" class="btn btn-primary">Sign In</a>
+            <?php
+              if(isset($_SESSION['session_id'])){
+                echo('<a href="profile.html"><img width="32"  height="32" src="images/icons/user.png" alt=""></a>');
+              }else{
+                echo('<a href="signin.html" class="btn btn-primary">Sign In</a>');
+              }
+            ?>
           </div>
         </div>
       </div>

@@ -249,3 +249,14 @@ footer {
 .admin-dashboard-page.expand-sidebar .sidebar-label {
   display: inline-block;
 }
+
+/* PROFILE PAGE  */
+.profile-page {
+  min-height: 100vh;
+  width: 100%;
+}
+
+.profile-page .nav-link.active {
+  background-color: rgb(221, 229, 233) !important;
+  color: black !important;
+}

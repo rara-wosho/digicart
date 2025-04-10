@@ -39,7 +39,7 @@
                 $user_check_result = $conn->query($user_check_query);
     
                 if ($user_check_result->num_rows > 0) {
-                    $_SESSION['signup_error'] = "Username or Email is taken";
+                    $_SESSION['signup_error'] = "Email is already taken";
                 }
             }
     
@@ -110,14 +110,13 @@
                     //check if user is admin
                     if($users_record['role'] == 'admin'){
                         $_SESSION['user_admin'] = true;
-                        $_SESSION['signin_success_admin'] = "Signed In Successfully. Welcome to your dashboard";
+                        // $_SESSION['signin_success_admin'] = "Signed In Successfully. Welcome to your dashboard";
 
-                        header('location: admin_dashboard.html');
+                        header('location: admin/admin_dashboard.html');
                         die();
                     }
 
-                    $_SESSION['signin_success'] = "Signed in Successfully";
-                    header('location: products.html');
+                    header('location: products.php');
                     die();
                 }else{
                     $_SESSION['signin_error'] = "Password doesn't match with our records";

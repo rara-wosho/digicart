@@ -65,6 +65,16 @@ include "includes/includes.php";
 
               unset($_SESSION['signin_error']);
           }
+          if(isset($_SESSION['signup_success'])){
+              echo '
+                  <div class="alert alert-success alert-dismissible fade show" role="alert">
+                      ' . $_SESSION["signup_success"] . '
+                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+              ';
+
+              unset($_SESSION['signup_success']);
+          }
       ?>
 
         <p class="text-muted">Welcome back!</p>
@@ -77,6 +87,7 @@ include "includes/includes.php";
             >Email address</label
           >
           <input
+            value="<?= isset($_SESSION['signin_data']) ? $_SESSION['signin_data']['email'] : "" ?>"
             required
             name="email"
             type="email"
@@ -87,17 +98,21 @@ include "includes/includes.php";
         </div>
 
         <div class="mb-3">
-          <label for="exampleFormControlInput2" class="form-label"
-            >Password</label
-          >
-          <input
-            required
-            name="password"
-            type="password"
-            class="form-control"
-            id="exampleFormControlInput2"
-            placeholder="Enter password"
-          />
+          <label for="password" class="form-label">Password</label>
+          <div class="input-group">
+            <input
+              value="<?= isset($_SESSION['signin_data']) ? $_SESSION['signin_data']['password'] : "" ?>"
+              required
+              name="password"
+              type="password"
+              class="form-control"
+              id="password"
+              placeholder="Enter password"
+            />
+            <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye-icon lucide-eye"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
         </div>
         <div class="btns d-flex align-items-center flex-column">
           <input type="submit" name="signin-btn" class="btn btn-primary w-100 mb-2" value="Sign In"/>
@@ -111,11 +126,25 @@ include "includes/includes.php";
       </form>
     </div>
 
+     <!-- JQUERY CDN -->
+     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
     <!-- bootstrap cdn -->
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
       crossorigin="anonymous"
     ></script>
+
+    <script>
+      $(document).ready(function() {
+        $("#togglePassword").click(function() {
+          // Toggle the type attribute
+          const passwordInput = $("#exampleFormControlInput2");
+          const type = passwordInput.attr("type") === "password" ? "text" : "password";
+          passwordInput.attr("type", type);
+        });
+      });
+    </script>
   </body>
 </html>
