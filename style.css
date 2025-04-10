@@ -1,0 +1,251 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+:root {
+  --clr-primary: rgb(32, 59, 215);
+  --clr-accent: rgb(255, 223, 17);
+  --text-accent: rgb(216, 190, 24);
+
+  --bg-primary: linear-gradient(
+    to bottom,
+    rgb(40, 166, 244) 0%,
+    rgb(116, 88, 255) 100%
+  );
+
+  --bg-body: rgb(242, 250, 255);
+}
+
+* {
+  font-family: "Poppins", sans-serif;
+}
+
+.text-primary {
+  color: rgb(116, 88, 255) !important ;
+}
+.bg-primary {
+  background: var(--bg-primary) !important;
+}
+
+.bg-white {
+  background-color: rgb(251, 253, 255) !important;
+}
+
+.btn-primary {
+  background: var(--bg-primary) !important;
+}
+a {
+  text-decoration: none;
+}
+
+.text-accent {
+  color: var(--text-accent);
+}
+
+.bg-accent {
+  background-color: var(--clr-accent);
+}
+
+.bg-none {
+  background: none;
+}
+body {
+  background-color: var(--bg-body);
+  overflow-y: scroll;
+}
+
+body.hasBG {
+  background-image: url("images/bgbody.jpg");
+  background-size: cover;
+  background-position: 0 100%;
+  height: 100vh !important;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+.nav-link.active {
+  color: var(--text-accent) !important;
+}
+
+.hero-section {
+  min-height: 100vh;
+}
+
+.hero-main-text {
+  font-size: 4.4rem;
+  text-shadow: 0 0 10px rgba(251, 253, 255, 1);
+}
+
+.card {
+  width: 18rem;
+  position: relative;
+}
+
+.col {
+  margin-bottom: 2.5rem;
+}
+.card-ratings {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+.card-ratings p {
+  font-size: 0.8rem;
+}
+.card img {
+  height: 10rem;
+  object-fit: cover;
+}
+
+.card-sold {
+  font-size: 0.8rem;
+}
+
+.section-padding {
+  padding-block: 7rem;
+}
+
+footer {
+  background-color: rgba(17, 105, 198, 0.5);
+}
+
+/* CUSTOMER FEEDBACK  */
+.customer-feedback {
+  background-color: rgba(0, 35, 72, 0.6);
+}
+
+.feedback-card {
+  width: 22rem;
+  height: 18rem;
+}
+
+/* CATEGORY SECTOINN  */
+.category-section {
+  padding-top: 5rem;
+}
+
+.category-card {
+  width: 13rem;
+}
+
+/* PRODUCT DETAILS PAGE  */
+.product-details-page {
+  max-width: 900px;
+  min-height: 100vh;
+  margin-inline: auto;
+  padding-top: 6rem;
+}
+
+/* CART PAGE  */
+.cart-page-wrapper {
+  padding-top: 6rem;
+  min-height: 100vh;
+}
+
+.product-table td {
+  padding-block: 20px;
+}
+
+.product-table tr {
+  border-top: 1px solid rgb(220, 220, 220);
+}
+
+.product-table img {
+  width: 70px;
+  aspect-ratio: 5 /5;
+  object-fit: cover;
+}
+
+.product-table .remove-btn {
+  padding: 8px;
+  background-color: rgb(240, 240, 240);
+}
+
+/* SIGN IN PAGE  */
+.signin-page,
+.signup-page {
+  min-height: 100vh;
+  width: 100%;
+  background-color: rgba(0, 35, 72, 0.6);
+}
+.signin-page label,
+.signup-page label {
+  font-size: 0.8rem;
+}
+
+/* SIGN UP PAGE  */
+.signup-form input {
+  width: 350px !important;
+}
+
+/* CHECK OUT PAGE  */
+.checkout-page {
+  padding-top: 6rem;
+  min-height: 100vh;
+}
+
+.checkout-page .left,
+.checkout-page .right {
+  width: 50%;
+}
+
+/* ADMIN DASHBOARD  */
+
+.admin-dashboard-page {
+  --sidebar-width: 70px;
+
+  padding-left: var(--sidebar-width);
+  min-height: 100vh;
+  width: 100%;
+  transition: padding-left 0.3s;
+}
+.admin-dashboard-page.expand-sidebar {
+  --sidebar-width: 300px;
+}
+
+.sidebar {
+  width: var(--sidebar-width);
+  position: fixed;
+  top: 0;
+  left: 0;
+  transition: width 0.3s;
+  height: 100vh;
+  overflow-x: hidden;
+}
+
+.sidebar ul {
+  list-style: none;
+  list-style-type: none;
+}
+
+.sidebar ul li.active {
+  background: var(--bg-primary);
+  border-radius: 8px;
+}
+
+.sidebar ul li {
+  margin-bottom: 1rem;
+}
+.sidebar ul li.active a {
+  color: rgb(248, 248, 248);
+}
+.sidebar ul li a {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  color: rgb(50, 50, 50);
+  padding: 6px 12px;
+}
+
+.sidebar .sidebar-icon {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+}
+
+.admin-dashboard-page .sidebar-label {
+  display: none;
+  white-space: nowrap;
+}
+
+.admin-dashboard-page.expand-sidebar .sidebar-label {
+  display: inline-block;
+}
