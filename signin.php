@@ -140,7 +140,7 @@ include "includes/includes.php";
       $(document).ready(function() {
         $("#togglePassword").click(function() {
           // Toggle the type attribute
-          const passwordInput = $("#exampleFormControlInput2");
+          const passwordInput = $("#password");
           const type = passwordInput.attr("type") === "password" ? "text" : "password";
           passwordInput.attr("type", type);
         });

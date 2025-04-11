@@ -9,11 +9,12 @@
     include "classes/Users.php";
     $user = new Users();
 
+    include "classes/DigitalProducts.php";
+    $digiProduct = new DigitalProducts();
+
     // include "classes/Alerts.php";
     // $alert = new Alerts();
 
-    // include "classes/Furniture.php";
-    // $furniture = new Furniture();
 
     // include "classes/Cart.php";
     // $cart = new Cart();

@@ -71,7 +71,7 @@
                     header('location: signin.php');
                     die();
                 } else {
-                    $_SESSION['signup_error'] = "Error: Something went wrong while we insert your informations.";
+                    $_SESSION['signup_error'] = "Error: Something went wrong while we register your informations.";
                 }
                 
                 header('location: signup.php');
@@ -79,56 +79,102 @@
             }
         }
 
-        public function verifyUser($conn, $postData){
-            $this->email = filter_var($postData['email'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-            $this->password = filter_var($postData['password'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-
-            $user_check_query = "SELECT * FROM users WHERE email='$this->email'";
-            $user_check_result = $conn->query($user_check_query);
-
-            if($user_check_result->num_rows > 0){
-                $user_record = $user_check_result->fetch_assoc();
-
+       
+        public function verifyUser($conn, $postData) {
+            $this->email = filter_var($postData['email'], FILTER_SANITIZE_EMAIL);
+            $this->password = $postData['password'];
+        
+            // Prepare statement to prevent SQL injection
+            $user_check_query = "SELECT * FROM users WHERE email=?";
+            $stmt = $conn->prepare($user_check_query);
+            $stmt->bind_param("s", $this->email);
+            $stmt->execute();
+            $result = $stmt->get_result();
+        
+            if ($result->num_rows > 0) {
+                $user_record = $result->fetch_assoc();
                 $db_password = $user_record['password'];
                 $id = $user_record['user_id'];
+                $role = $user_record['role'];
                 
-                $users_query = "SELECT * FROM users WHERE user_id='$id'";
-
-                $users_result = $conn->query($users_query);
-                $users_record = $users_result->fetch_assoc();
-
-                if($this->password == $db_password){
-                // if(password_verify($this->password, $db_password)){
-
-                    // $picResult = $conn->query("SELECT * FROM user_pfp WHERE user_id='$id' ");
-
-                    // $fetchResult = $picResult->fetch_assoc();
-
-                    $_SESSION['session_id'] = $id;
-                    // $_SESSION['user_picture'] = $fetchResult['pfp_path'];
-
-                    //check if user is admin
-                    if($users_record['role'] == 'admin'){
+                // Using plain text password comparison (should use password_verify in production)
+                if ($this->password == $db_password) {
+                // password verify is not working: if(password_verify($this->password, $db_password)) {
+                    
+                    // Set session variables for current user
+                    $_SESSION['current_user'] = $user_record;
+                    
+                    // Redirect to dashboard for admins
+                    if ($role == 'admin') {
                         $_SESSION['user_admin'] = true;
-                        // $_SESSION['signin_success_admin'] = "Signed In Successfully. Welcome to your dashboard";
-
                         header('location: admin/admin_dashboard.html');
-                        die();
+                        exit();
                     }
-
+                    
                     header('location: products.php');
-                    die();
-                }else{
+                    exit();
+                } else {
                     $_SESSION['signin_error'] = "Password doesn't match with our records";
                 }
-            }else{
+            } else {
                 $_SESSION['signin_error'] = "User not found";
             }
+            
+            // Handle error and redirect
+            if (isset($_SESSION['signin_error'])) {
+                $_SESSION['signin_data'] = $postData;
+                header('location: signin.php');
+                exit();
+            }
+        }
 
-            if(isset($_SESSION['signin_error'])){
-                $_SESSION['signin_data'] = $_POST;
-                header('location: signin.php'); 
-                die();
+
+        public function updateUser($conn, $postData, $userId) {
+            // Sanitize input data
+            $firstname = filter_var($postData['firstname'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $lastname = filter_var($postData['lastname'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $gender = filter_var($postData['gender'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $barangay = filter_var($postData['barangay'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $municipality = filter_var($postData['municipality'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $province = filter_var($postData['province'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            
+            // Prepare statement to prevent SQL injection
+            $update_query = "UPDATE users SET 
+                            firstname = ?, 
+                            lastname = ?, 
+                            gender = ?, 
+                            barangay = ?, 
+                            municipality = ?, 
+                            province = ? 
+                            WHERE user_id = ?";
+                            
+            $stmt = $conn->prepare($update_query);
+            $stmt->bind_param("ssssssi", $firstname, $lastname, $gender, $barangay, $municipality, $province, $userId);
+            
+            // Execute the update
+            if($stmt->execute()) {
+                // Update was successful
+                
+                // Update the session with new user information
+                $user_query = "SELECT * FROM users WHERE user_id = ?";
+                $user_stmt = $conn->prepare($user_query);
+                $user_stmt->bind_param("i", $userId);
+                $user_stmt->execute();
+                $result = $user_stmt->get_result();
+                
+                if($result->num_rows > 0) {
+                    $user_record = $result->fetch_assoc();
+                    $_SESSION['current_user'] = $user_record;
+                    
+                    $_SESSION['update_success'] = "Profile information updated successfully!";
+                    header('location: profile.php');
+                    exit();
+                }
+            } else {
+                // Update failed
+                $_SESSION['update_error'] = "Failed to update profile information. Please try again.";
+                header('location: profile.php');
+                exit();
             }
         }
 

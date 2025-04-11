@@ -1,3 +1,14 @@
+<?php
+
+  include "includes/includes.php";
+
+  if(!isset($_SESSION['current_user'])){
+    header("location: signin.php");
+    exit();
+  }
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -80,10 +91,12 @@
         class="profile-content bg-white py-5 border-bottom"
       >
         <div class="row container mx-auto">
+
+          <!-- TABS IN LEFT AREA  -->
           <div class="col col-4 d-flex flex-column">
             <!-- tabs -->
             <div
-              class="nav flex-column nav-pills mb-3"
+              class="nav flex-column nav-pills mb-3 border p-4 rounded-2"
               id="v-pills-tab"
               role="tablist"
               aria-orientation="vertical"
@@ -127,6 +140,31 @@
             </div>
           </div>
           <div class="col col-8 border rounded-2 p-4">
+
+            <!-- updating profile feedback  -->
+            <?php 
+                if(isset($_SESSION['update_error'])){
+                    echo '
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            ' . $_SESSION["update_error"] . '
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    ';
+
+                    unset($_SESSION['update_error']);
+                }
+                if(isset($_SESSION['update_success'])){
+                    echo '
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            ' . $_SESSION["update_success"] . '
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    ';
+
+                    unset($_SESSION['update_success']);
+                }
+            ?>
+
             <!-- content here -->
             <div class="tab-content" id="v-pills-tabContent">
               <div
@@ -135,88 +173,88 @@
                 role="tabpanel"
                 aria-labelledby="personal-info-tab"
               >
-                <form action="" class="d-flex flex-column">
-                  <div
-                    class="d-flex align-items-center justify-content-between"
-                  >
-                    <h4>Profile Informations</h4>
+                
+              <form action="update-profile-logic.php?user_id=<?= $_SESSION['current_user']['user_id'] ?>" method="POST" class="d-flex flex-column">
+                <div class="d-flex align-items-center justify-content-between">
+                  <h4>Profile Informations</h4>
+                  <button type="submit" class="btn btn-primary px-3 btn-sm py-2">Update Changes</button>
+                </div>
+                <div style="gap: 12px" class="d-flex">
+                  <div class="mb-3 w-100">
+                    <label for="firstname" class="form-label">First Name</label>
                     <input
-                      type="submit"
-                      value="Update Changes"
-                      class="btn btn-primary px-3 btn-sm py-2"
+                      value="<?= $_SESSION['current_user']['firstname'] ?>"
+                      required
+                      name="firstname"
+                      type="text"
+                      class="form-control"
+                      id="firstname"
+                      placeholder="Enter First Name"
                     />
                   </div>
-                  <div style="gap: 12px" class="d-flex">
-                    <div class="mb-3 w-100">
-                      <label for="firstname" class="form-label"
-                        >First Name</label
-                      >
-                      <input
-                        required
-                        name="firstname"
-                        type="text"
-                        class="form-control"
-                        id="firstname"
-                        placeholder="Enter First Name"
-                      />
-                    </div>
-                    <div class="mb-3 w-100">
-                      <label for="lastname" class="form-label">Last Name</label>
-                      <input
-                        required
-                        name="lastname"
-                        type="text"
-                        class="form-control"
-                        id="lastname"
-                        placeholder="Enter Last Name"
-                      />
-                    </div>
+                  <div class="mb-3 w-100">
+                    <label for="lastname" class="form-label">Last Name</label>
+                    <input
+                      value="<?= $_SESSION['current_user']['lastname'] ?>"
+                      required
+                      name="lastname"
+                      type="text"
+                      class="form-control"
+                      id="lastname"
+                      placeholder="Enter Last Name"
+                    />
                   </div>
+                </div>
 
-                  <div class="mb-3">
-                    <label for="gender" class="form-label">Gender</label>
-                    <select class="form-control" name="gender" id="">
-                      <option value="male">Male</option>
-                      <option value="female">Female</option>
-                    </select>
-                  </div>
+                <div class="mb-3">
+                  <label for="gender" class="form-label">Gender</label>
+                  <select class="form-control" name="gender" id="gender">
+                    <option value="male" <?= $_SESSION['current_user']['gender'] == 'male' ? 'selected' : '' ?>>Male</option>
+                    <option value="female" <?= $_SESSION['current_user']['gender'] == 'female' ? 'selected' : '' ?>>Female</option>
+                  </select>
+                </div>
 
-                  <div class="mb-3 mt-5">
-                    <label for="barangay" class="form-label">Barangay</label>
-                    <input
-                      required
-                      name="barangay"
-                      type="text"
-                      class="form-control"
-                      id="barangay"
-                      placeholder="Enter Barangay"
-                    />
-                  </div>
-                  <div class="mb-3">
-                    <label for="city" class="form-label"
-                      >Municipality/City</label
-                    >
-                    <input
-                      required
-                      name="municipality"
-                      type="text"
-                      class="form-control"
-                      id="city"
-                      placeholder="Enter Municipality/City"
-                    />
-                  </div>
-                  <div class="mb-3">
-                    <label for="province" class="form-label">Province</label>
-                    <input
-                      required
-                      name="province"
-                      type="text"
-                      class="form-control"
-                      id="province"
-                      placeholder="Enter Province"
-                    />
-                  </div>
-                </form>
+                <div class="mb-3 mt-5">
+                  <label for="barangay" class="form-label">Barangay</label>
+                  <input
+                    value="<?= $_SESSION['current_user']['barangay'] ?>"
+                    required
+                    name="barangay"
+                    type="text"
+                    class="form-control"
+                    id="barangay"
+                    placeholder="Enter Barangay"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="city" class="form-label">Municipality/City</label>
+                  <input
+                    value="<?= $_SESSION['current_user']['municipality'] ?>"
+                    required
+                    name="municipality"
+                    type="text"
+                    class="form-control"
+                    id="city"
+                    placeholder="Enter Municipality/City"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="province" class="form-label">Province</label>
+                  <input
+                    value="<?= $_SESSION['current_user']['province'] ?>"
+                    required
+                    name="province"
+                    type="text"
+                    class="form-control"
+                    id="province"
+                    placeholder="Enter Province"
+                  />
+                </div>
+                
+                <!-- Add hidden field for user_id -->
+                <input type="hidden" name="user_id" value="<?= $_SESSION['current_user']['user_id'] ?>">
+              </form>
+
               </div>
               <div
                 class="tab-pane fade"

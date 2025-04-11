@@ -11,7 +11,7 @@
     rgb(116, 88, 255) 100%
   );
 
-  --bg-body: rgb(242, 250, 255);
+  --bg-body: rgb(240, 249, 255);
 }
 
 * {
@@ -198,7 +198,7 @@ footer {
   transition: padding-left 0.3s;
 }
 .admin-dashboard-page.expand-sidebar {
-  --sidebar-width: 300px;
+  --sidebar-width: 260px;
 }
 
 .sidebar {
@@ -259,4 +259,9 @@ footer {
 .profile-page .nav-link.active {
   background-color: rgb(221, 229, 233) !important;
   color: black !important;
+}
+
+/* ADMIN PRODUCT LIST  */
+table tr td {
+  font-size: 0.85rem;
 }
