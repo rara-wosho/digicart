@@ -15,8 +15,8 @@
     include "classes/Cart.php";
     $cart = new Cart();
     
-    // include "classes/Alerts.php";
-    // $alert = new Alerts();
+    include "classes/Transactions.php";
+    $transaction = new Transactions();
 
 
 

@@ -123,10 +123,13 @@
 
     <div class="cart-page-wrapper">
       <div class="container mx-auto d-flex flex-column">
-        <div class="d-flex align-items-center justify-content-between py-3">
-          <h3>Your Cart<span class="fs-6 ms-4">Total : <?=$items->num_rows?></span></h3>
+        <div class="d-flex align-items-center py-3">
+          <div onclick="window.history.back()" class="bg-white border d-flex align-items-center rounded-circle me-3 p-1">
+            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left-icon lucide-chevron-left"><path d="m15 18-6-6 6-6"/></svg>
+          </div>
+          <h3 class="mb-0">Your Cart<span class="fs-6 ms-4">Total : <?=$items->num_rows?></span></h3>
 
-          <a href="products.php" class="btn border bg-accent btn-sm"
+          <a href="products.php" class="btn border bg-accent btn-sm ms-auto"
             >Continue Browsing</a
           >
         </div>

@@ -120,14 +120,54 @@
     </nav>
 
     <div class="checkout-page container">
-      <div class="d-flex flex-column py-3">
-        <h3>Check Out</h3>
-      </div>
+      <form id="checkoutForm" method="POST" action="confirm-payment-logic.php" style="gap:12px;" class="d-flex align-items-start justify-content-center mb-5">
+        <div class="left p-5 bg-white shadow-sm rounded-3">
+            <?php 
+              if(isset($_SESSION['transaction_error'])){
+                  echo '
+                      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                          ' . $_SESSION["transaction_error"] . '
+                          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                      </div>
+                  ';
 
-      <div class="d-flex align-items-start justify-content-center mb-5">
-        <div class="left pe-5">
+                  unset($_SESSION['transaction_error']);
+              }
+              if(isset($_SESSION['transaction_success'])){
+            ?>
+                  <!-- Show Modal if transaction is successful -->
+                  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="false">
+                    <div class="modal-dialog">
+                      <div class="modal-content border-0">
+                        <div class="modal-header bg-primary border-0">
+                          <h1 class="modal-title fs-5 text-white" id="staticBackdropLabel">Thank you for your purchase!</h1>
+                        </div>
+                        <div class="modal-body d-flex flex-column align-items-center p-4">
+                          <img src="images/purchase-success.png" width="180" height="180" alt="">
+                          <h6 class="text-muted mt-3">Here's your link to download the file.</h6>
+                          <p class="text-secondary text-center">You can see this link again in your profile -> order section</p>
+                          <a href="" class="text-primary text-center mb-2 fs-6">sdhasdhasdkhas</a>
+                        </div>
+                        <div class="modal-footer py-3">
+                          <a href="products.php" class="btn w-100 btn-primary">Close and Exit</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+            <?php
+
+                  unset($_SESSION['transaction_success']);
+              }
+            ?>
+
+          <div class="d-flex flex-column mb-2">
+            <h3>Check Out</h3>
+          </div>
           <h5 class="mb-4 text-secondary">Product Details</h5>
           <div class="d-flex align-items-center border-top py-3 border-bottom">
+            <input type="hidden" name="transac-product-id" value="<?=$product['product_id']?>" >
+            <input type="hidden" name="transac-user-id" value="<?=$_SESSION['current_user']["user_id"]?>" >
+            <input type="hidden" name="transac-total" value="<?=$product['price']?>" >
             <img
               src="<?=$product['image_path']?>"
               class="rounded-2"
@@ -137,29 +177,33 @@
               alt=""
             />
 
-            <h6 class="ms-3 mb-0"><?=$product['name']?></h6>
-            <h6 class="text-primary ms-auto">₱339</h6>
+            <input type="text" class="appearance-none fw-semibold ms-2 text-muted" name="transac-product-name" readonly value="<?=$product['name']?>">
+            <input type="number" class="appearance-none fw-semibold ms-auto text-muted text-end" name="transac-price" readonly value="<?=(int)$product['price']?>">
           </div>
 
           <p class="text-muted py-3 border-bottom"><?=$product['description']?></p>
 
-          <div
-            class="d-flex align-items-center justify-content-between mt-5 mb-2"
-          >
-            <h6 class="">Subtotal</h6>
-            <h6 class="">₱<?=$product['price']?></h6>
-          </div>
-          <div class="d-flex align-items-center justify-content-between">
-            <h6 class="fw-bold">Total</h6>
-            <h6 class="text-primary fw-bold">₱<?=$product['price']?></h6>
+          <div style="background-color:rgba(92, 157, 248, 0.16);" class="p-3 rounded-1">
+            <h5 class="text-muted mb-2">Order Summary</h5>
+            <p class="text-secondary">A download link will appear once your payment is confirmed.</p>
+            <div
+              class="d-flex align-items-center justify-content-between mt-2 mb-2"
+            >
+              <h6 class="">Subtotal</h6>
+              <h6 class="text-muted">₱<?=$product['price']?></h6>
+            </div>
+            <div class="d-flex align-items-center justify-content-between">
+              <h6 class="fw-bold fs-4 text-primary">Total</h6>
+              <h4 class="text-primary fw-bold">₱<?=$product['price']?></h4>
+            </div>
           </div>
         </div>
-        <div class="right pe-5">
+        <div class="right p-5 bg-white shadow-sm rounded-3">
           <h5 class="mb-4 text-secondary">Order Details</h5>
-
           <div class="mb-3">
             <label for="fullname" class="form-label">Full Name</label>
             <input
+              required name="fullname"
               type="text"
               class="form-control bg-none"
               id="fullname"
@@ -170,6 +214,7 @@
           <div class="mb-3">
             <label for="fullname" class="form-label">Address</label>
             <input
+              required name="address"
               type="text"
               class="form-control bg-none"
               id="fullname"
@@ -180,6 +225,7 @@
           <div class="mb-3">
             <label for="fullname" class="form-label">Email</label>
             <input
+              required name='email'
               type="text"
               class="form-control bg-none"
               id="fullname"
@@ -189,34 +235,105 @@
           </div>
 
           <p class="mb-2">Payment Options</p>
-          <div
-            style="gap: 8px; flex-wrap: wrap"
-            class="d-flex align-items-center"
-          >
-            <div class="d-flex px-3 py-2 border rounded-1">
-              <p class="mb-0">Credit Card</p>
+          <ul class="nav nav-tabs mb-3" id="pills-tab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link py-0  active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">
+                <label for="master-card">
+                <input type="radio" required name="payment-option" id="master-card" value="master-card">
+                  <img width="50" height="50" src="images/icons/card.png" alt="">
+                </label>
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link py-0 " id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">
+                  <label for="paypal">
+                  <input type="radio" required name="payment-option" id="paypal" value="paypal">
+                    <img width="50" height="50" src="images/icons/paypal.png" alt="">
+                  </label>
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link py-0 " id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">
+                  <label for="apple-pay">
+                    <input type="radio" required name="payment-option" id="apple-pay" value="apple-pay">
+                    <img width="50" height="50" src="images/icons/apple-pay.png" alt="">
+                  </label>
+              </button>
+            </li>
+          </ul>
+          <div class="tab-content" id="pills-tabContent">
+            <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
+              <div class="mb-3">
+                <h6 class="mb-3">Master Card</h6>
+                <label for="gcash" class="form-label">Card Holder Name</label>
+                <input
+                  type="text"
+                  class="form-control bg-none"
+                  id="gcash"
+                  placeholder="Name on Card"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="gcash" class="form-label">Card Number</label>
+                <input
+                  type="text"
+                  class="form-control bg-none"
+                  id="gcash"
+                  placeholder="00-000-000-00"
+                />
+              </div>
             </div>
-            <div class="d-flex px-3 py-2 border rounded-1">
-              <p class="mb-0">Paypal</p>
+            <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
+              <div class="mb-3">
+                <h6 class="mb-3">Paypal</h6>
+                <label for="gcash" class="form-label">Paypal Number</label>
+                <input
+                  type="text"
+                  class="form-control bg-none"
+                  id="gcash"
+                  placeholder=""
+                />
+              </div>
+              <div class="mb-3">
+                <label for="gcash" class="form-label">Registered Name</label>
+                <input
+                  type="text"
+                  class="form-control bg-none"
+                  id="gcash"
+                  placeholder=""
+                />
+              </div>  
             </div>
-            <div class="d-flex px-3 py-2 border rounded-1">
-              <p class="mb-0">Gcash</p>
-            </div>
-            <div class="d-flex px-3 py-2 border rounded-1">
-              <p class="mb-0">Bank Transfer</p>
-            </div>
-            <div class="d-flex px-3 py-2 border rounded-1">
-              <p class="mb-0">Digital Wallet</p>
+            <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">
+              <div class="mb-3">
+                <h6 class="mb-3">Apple Pay</h6>
+                <label for="gcash" class="form-label">Apple Pay Number</label>
+                <input
+                  type="text"
+                  class="form-control bg-none"
+                  id="gcash"
+                  placeholder=""
+                />
+              </div>
+              <div class="mb-3">
+                <label for="gcash" class="form-label">Registered Name</label>
+                <input
+                  type="text"
+                  class="form-control bg-none"
+                  id="gcash"
+                  placeholder=""
+                />
+              </div> 
             </div>
           </div>
 
           <button
             class="bg-accent fw-semibold w-100 text-center border-0 py-2 mt-3 rounded-2"
           >
-            Purchase Now ₱<?=$product['price']?>
+            Confirm Payment
           </button>
         </div>
-      </div>
+      </form>
     </div>
 
     <!-- FOOTER  -->
@@ -241,4 +358,14 @@
       crossorigin="anonymous"
     ></script>
   </body>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+  // Get the modal instance
+  var myModal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
+  
+  // Show the modal automatically
+  myModal.show();
+});
+  </script>
 </html>
