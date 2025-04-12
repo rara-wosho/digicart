@@ -3,11 +3,17 @@
   include "includes/includes.php";
 
   // get all products 
+
+  // category parameter is optional 
   $products = $digiProduct->getAllProducts($connection);
+  
+  if($_SERVER['REQUEST_METHOD'] = "GET"){
+    if(isset($_GET['category'])){
+      $products = $digiProduct->getAllProducts($connection, $_GET['category']);
+    }
+  }
 
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -85,7 +91,7 @@
             <li class="nav-item">
               <a
                 class="nav-link text-uppercase fw-semibold px-4 text-center btn"
-                href="cart.html"
+                href="cart.php"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -136,27 +142,28 @@
       <!-- CATEGORY FORM  -->
       <form
         action=""
+        method="GET"
         class="category-form mb-3 d-flex flex-column w-100 container px-4 pt-5 pb-3"
       >
         <h3>Choose Category</h3>
 
         <div class="categ-btns d-flex">
-          <button class="border btn-secondary btn rounded-1 py-2 px-4 me-2">
+          <button type="submit" name="category" value="all"  style="font-size:14px" class="border  btn-secondary btn rounded-1 py-1 px-3 me-2">
             All
           </button>
-          <button class="border rounded-1 py-2 px-4 me-2 bg-body-tertiary">
+          <button type="submit" value="Templates" name="category" style="font-size:14px" class="border  rounded-1 py-1 px-3 me-2 bg-body-tertiary">
             Templates
           </button>
-          <button class="border rounded-1 py-2 px-4 me-2 bg-body-tertiary">
+          <button type="submit" value="E-books" name="category" style="font-size:14px" class="border  rounded-1 py-1 px-3 me-2 bg-body-tertiary">
             E-books
           </button>
-          <button class="border rounded-1 py-2 px-4 me-2 bg-body-tertiary">
+          <button type="submit" value="Digital Art" name="category" style="font-size:14px" class="border  rounded-1 py-1 px-3 me-2 bg-body-tertiary">
             Digital Art
           </button>
-          <button class="border rounded-1 py-2 px-4 me-2 bg-body-tertiary">
+          <button type="submit" value="For Kids" name="category" style="font-size:14px" class="border  rounded-1 py-1 px-3 me-2 bg-body-tertiary">
             For Kids
           </button>
-          <button class="border rounded-1 py-2 px-4 me-2 bg-body-tertiary">
+          <button type="submit" value="Courses" name="category" style="font-size:14px" class="border  rounded-1 py-1 px-3 me-2 bg-body-tertiary">
             Courses
           </button>
         </div>
@@ -166,11 +173,11 @@
       <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 container">
         <?php while ($row = $products->fetch_assoc()): ?>
           <div class="col">
-            <a href="product-details.html?id=<?=$row['product_id']?>" class="card">
+            <a href="product-details.php?id=<?=$row['product_id']?>" class="card">
               <div
                 class="card-ratings d-flex align-items-center bg-white shadow-sm py-1 px-2 rounded-1"
               >
-                <p class="mb-0 me-1 fw-semibold">20</p>
+                <p class="mb-0 me-1 fw-semibold"><?= $row['ratings']?></p>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="13"
@@ -208,6 +215,18 @@
             </a>
           </div>
         <?php endwhile ?>
+
+        <?php
+          if($products->num_rows <= 0){
+        ?>
+          <div class="d-flex flex-column align-items-center justify-content-center p-5 w-100">
+            <h4 class="text-secondary">Whoops!</h4>
+            <p class="text-secondary">It's empty in here.</p>
+            <img width="250" height="250" src="images/icons/empty-pana.png" alt="">
+          </div>
+        <?php
+          }
+        ?>
       </div>
     </div>
 

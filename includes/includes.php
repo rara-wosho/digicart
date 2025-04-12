@@ -12,12 +12,13 @@
     include "classes/DigitalProducts.php";
     $digiProduct = new DigitalProducts();
 
+    include "classes/Cart.php";
+    $cart = new Cart();
+    
     // include "classes/Alerts.php";
     // $alert = new Alerts();
 
 
-    // include "classes/Cart.php";
-    // $cart = new Cart();
 
     // include "classes/Orders.php";
     // $order = new Order();

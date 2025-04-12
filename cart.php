@@ -1,9 +1,26 @@
+<?php
+
+  include "includes/includes.php";
+
+  // redirect back the user to sign in page if not signed in 
+  if(isset($_SESSION["current_user"])){
+
+    $ownerId = $_SESSION["current_user"]['user_id'];
+    $items = $cart->getCartProducts($connection, $ownerId);
+
+  }else{
+    header("location: signin.php");
+    exit();
+  }
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Check Out</title>
+    <title>Products</title>
     <link rel="icon" href="images/logo.png" type="image/x-icon" />
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
@@ -52,7 +69,7 @@
             </li>
             <li class="nav-item">
               <a
-                class="nav-link text-uppercase fw-semibold px-4 text-center"
+                class="nav-link text-uppercase fw-semibold px-4 text-center active"
                 href="products.html"
                 >Products</a
               >
@@ -104,112 +121,69 @@
       </div>
     </nav>
 
-    <div class="checkout-page container">
-      <div class="d-flex flex-column py-3">
-        <h3>Check Out</h3>
-      </div>
+    <div class="cart-page-wrapper">
+      <div class="container mx-auto d-flex flex-column">
+        <div class="d-flex align-items-center justify-content-between py-3">
+          <h3>Your Cart<span class="fs-6 ms-4">Total : <?=$items->num_rows?></span></h3>
 
-      <div class="d-flex align-items-start justify-content-center mb-5">
-        <div class="left pe-5">
-          <h5 class="mb-4 text-secondary">Product Details</h5>
-          <div class="d-flex align-items-center border-top py-3 border-bottom">
-            <img
-              src="https://i.pinimg.com/736x/17/f0/cc/17f0cc7b278f037347f6b1a1279984a3.jpg"
-              width="60"
-              height="60"
-              style="object-fit: cover"
-              alt=""
-            />
-
-            <h6 class="ms-3">Coloring books for kids 24 pages</h6>
-            <h6 class="text-primary ms-auto">₱339</h6>
-          </div>
-          <div
-            class="d-flex align-items-center justify-content-between mt-5 mb-2"
+          <a href="products.php" class="btn border bg-accent btn-sm"
+            >Continue Browsing</a
           >
-            <h6 class="">Subtotal</h6>
-            <h6 class="">₱339</h6>
-          </div>
-          <div class="d-flex align-items-center justify-content-between">
-            <h6 class="fw-bold">Total</h6>
-            <h6 class="text-primary fw-bold">₱339</h6>
-          </div>
         </div>
-        <div class="right pe-5">
-          <h5 class="mb-4 text-secondary">Order Details</h5>
 
-          <div class="mb-3">
-            <label for="fullname" class="form-label">Full Name</label>
-            <input
-              type="text"
-              class="form-control bg-none"
-              id="fullname"
-              placeholder="name@example.com"
-              value="Mark P. Reyes"
-            />
-          </div>
-          <div class="mb-3">
-            <label for="fullname" class="form-label">Address</label>
-            <input
-              type="text"
-              class="form-control bg-none"
-              id="fullname"
-              placeholder="name@example.com"
-              value="Jimenez Misamis Occidental"
-            />
-          </div>
-          <div class="mb-3">
-            <label for="fullname" class="form-label">Contact Number</label>
-            <input
-              type="text"
-              class="form-control bg-none"
-              id="fullname"
-              placeholder="name@example.com"
-              value="09123456789"
-            />
-          </div>
-          <div class="mb-3">
-            <label for="fullname" class="form-label">Email</label>
-            <input
-              type="text"
-              class="form-control bg-none"
-              id="fullname"
-              placeholder="name@example.com"
-              value="Mark@gmail.com"
-            />
-          </div>
-
-          <p class="mb-2">Payment Options</p>
-          <div
-            style="gap: 8px; flex-wrap: wrap"
-            class="d-flex align-items-center"
-          >
-            <div class="d-flex px-3 py-2 border rounded-1">
-              <p class="mb-0">Credit Card</p>
-            </div>
-            <div class="d-flex px-3 py-2 border rounded-1">
-              <p class="mb-0">Paypal</p>
-            </div>
-            <div class="d-flex px-3 py-2 border rounded-1">
-              <p class="mb-0">Gcash</p>
-            </div>
-            <div class="d-flex px-3 py-2 border rounded-1">
-              <p class="mb-0">Bank Transfer</p>
-            </div>
-            <div class="d-flex px-3 py-2 border rounded-1">
-              <p class="mb-0">Digital Wallet</p>
-            </div>
-          </div>
-
-          <button
-            class="bg-accent fw-semibold w-100 text-center border-0 py-2 mt-3 rounded-2"
-          >
-            Purchase Now ₱339
-          </button>
-        </div>
+        <table style="flex-grow: 1" class="product-table mb-4">
+          <thead>
+            <tr class="border-0">
+              <th class="py-3">Image</th>
+              <th class="py-3 px-3">Product Name</th>
+              <th class="py-3">Price</th>
+              <th class="py-3">Check Out</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php while($row = $items->fetch_assoc()): ?>
+              <tr>
+                <td>
+                  <img
+                    src="<?= $row['image_path']?>"
+                    alt=""
+                    class="rounded-2"
+                  />
+                </td>
+                <td class="product-name px-3">
+                  <a href="check-out.html" class="text-black fw-semibold">
+                    <?= $row['name']?>
+                  </a>
+                </td>
+                <td>₱<?= $row['price']?></td>
+                <td><a href="check-out.php?product_id=<?= $row['product_id']?>" class="btn btn-sm btn-success">Check Out</a></td>
+                <td>
+                  <a href="delete-from-cart-logic.php?product_id=<?= htmlspecialchars($row['product_id']) ?>&user_id=<?= htmlspecialchars($row['user_id']) ?>" 
+                    class="btn d-inline-flex btn-outline-danger text-danger ms-auto remove-btn rounded-circle align-items-center"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="lucide lucide-x-icon lucide-x"
+                    >
+                      <path d="M18 6 6 18" />
+                      <path d="m6 6 12 12" />
+                    </svg>
+                  </a>
+                </td>
+              </tr>
+            <?php endwhile ?>
+          </tbody>
+        </table>
       </div>
     </div>
-
     <!-- FOOTER  -->
     <footer
       class="py-4 d-flex align-items-center justify-content-center bg-white"

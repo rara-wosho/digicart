@@ -35,7 +35,7 @@
     <div class="admin-dashboard-page expand-sidebar">
       <!-- SIDEBAR  -->
       <div
-        class="sidebar bg-white shadow-sm px-2 d-flex flex-column pb-3"
+        class="sidebar border-end bg-white shadow-sm px-2 d-flex flex-column pb-3"
       >
         <div class="sidebar-header border-bottom mb-4 py-3 d-flex align-items-center">
           <img
@@ -280,10 +280,14 @@
             </tr>
           </thead>
           <tbody>
-            <?php while ($row = $products->fetch_assoc()): ?>
+            <?php 
+              $count = 1;
+              while ($row = $products->fetch_assoc()){
+            ?>
+
             
               <tr>
-                <td>1</td>
+                <td><?=$count++?>.</td>
                 <td>
                   <img style="object-fit:cover;" class="rounded-2" src="<?= $row['image_path']?>" width="50" height="50" alt="">
                 </td>
@@ -305,7 +309,7 @@
                 </td>
               </tr>
         
-            <?php endwhile ?>
+            <?php } ?>
           </tbody>
         </table>
 

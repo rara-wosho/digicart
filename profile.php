@@ -56,7 +56,7 @@
               <path d="m15 18-6-6 6-6" />
             </svg>
           </button>
-          <button class="btn btn-danger btn-sm px-4">
+          <a href="logout-logic.php" class="btn btn-danger btn-sm px-4 m-0 d-flex align-items-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="16"
@@ -74,7 +74,7 @@
               <line x1="21" x2="9" y1="12" y2="12" />
             </svg>
             Log Out
-          </button>
+          </a>
         </div>
       </div>
 

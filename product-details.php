@@ -1,3 +1,45 @@
+<?php
+  include "includes/includes.php";
+
+
+  if(isset($_GET['id'])){
+    // get product id from url 
+    $productId = $_GET['id'];
+
+    // if product id exist, get the specific product 
+    $product = $digiProduct->getProductById($connection, $productId);
+
+    // declare the variable
+    $inCart = false;
+
+    // add the item to cart if add button is clicked 
+    if(isset($_POST['add-to-cart-btn'])){
+      
+      // if user is  signed in, add the item to cart
+      if(isset($_SESSION['current_user'])){
+        // the current user's id 
+        $ownerID  = $_SESSION['current_user']['user_id'];
+        $cart->addToCart($connection, $ownerID, $productId);
+      }else{
+        header("location: signin.php");
+        exit();
+      }
+
+    }
+
+    if(isset($_SESSION['current_user'])){
+      // reassign a value if item is in cart 
+      $inCart = $cart->isInCart($connection, $_SESSION['current_user']['user_id'], $productId);
+    }
+
+
+  }else{
+    // if no product id, redirect back to products 
+    header("location: products.php");
+    exit();
+  }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -74,7 +116,7 @@
             <li class="nav-item">
               <a
                 class="nav-link text-uppercase fw-semibold px-4 text-center btn"
-                href="cart.html"
+                href="cart.php"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -103,20 +145,16 @@
         </div>
       </div>
     </nav>
+
     <div class="product-details-page">
-      <!-- <div class="product-details-header mb-3">
-        <p class="mb-0 text-muted">
-          Home / Products /
-          <span class="text-primary fw-bold">Product Details</span>
-        </p>
-      </div> -->
 
       <!-- PRODUCT IMAGE  -->
       <div class="row row-cols-2 mb-3 pt-4">
         <div class="col">
+            <button onclick="window.location.href = 'products.php'" class="btn border rounded-circle btn-sm position-absolute bg-white shadow-sm d-flex align-items-center justify-content-center py-2"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left-icon lucide-chevron-left"><path d="m15 18-6-6 6-6"/></svg></button>
           <img
             style="aspect-ratio: 5/4; object-fit: contain"
-            src="https://i.pinimg.com/736x/17/f0/cc/17f0cc7b278f037347f6b1a1279984a3.jpg"
+            src="<?= $product['image_path']?>"
             width="100%"
             class="product-details-img"
           />
@@ -124,18 +162,24 @@
 
         <div class="col">
           <div class="details d-flex flex-column ps-3">
-            <h3>Kids coloring book 24 pages</h3>
-            <h5 class="text-primary py-2">₱344.40</h5>
+            <h3><?= $product['name']?></h3>
+            <h5 class="text-primary py-2">₱<?= $product['price']?></h5>
 
-            <p class="mb-0 text-secondary">Sold : 23</p>
-            <p class="mb-4 text-secondary">Ratings : 100%</p>
+            <div class="d-flex mb-2 align-items-center">
+              <p class="mb-0 text-secondary">Sold : <?= $product['sold']?></p>
+              <p class="mb-0  ms-4 text-secondary">Ratings : <?= $product['ratings']?></p>
+            </div>
 
             <!-- btns  -->
-            <div class="d-flex align-items-center mb-4">
+            <form method="POST" class="d-flex align-items-center mb-3">
               <button
+                type="submit"
+                name="add-to-cart-btn"
                 class="btn border py-2 px-3 bg-black text-white fw-semibold"
+                <?= $inCart ? 'disabled' : '' ?>
               >
-                Add to Cart
+
+                <?= $inCart ? "Added to Cart" : "Add to Cart" ?>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="18"
@@ -179,14 +223,18 @@
                   <circle cx="6" cy="5" r="3" />
                 </svg>
               </button>
-            </div>
+            </form>
 
-            <div>
-              <h6>Category</h6>
+            <div class="d-flex align-items-center">
+              <h6 class="mb-0 me-2">Category </h6>
               <p class="px-3 mb-0 py-2 rounded-1 border d-inline-block">
-                For Kids
+              <?= $product['category']?>
               </p>
             </div>
+
+            <p class="mt-3">
+              <?= $product['description']?>
+            </p>
           </div>
         </div>
       </div>
@@ -206,34 +254,7 @@
 
       <div class="content py-3">
         <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque odit
-          et minima excepturi, fugit atque repellat error nemo veniam, tempore
-          libero quae eaque, temporibus nam? Repellendus ab deleniti officiis
-          quam!
-        </p>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque odit
-          et minima excepturi, fugit atque repellat error nemo veniam, tempore
-          libero quae eaque, temporibus nam? Repellendus ab deleniti officiis
-          quam!
-        </p>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque odit
-          et minima excepturi, fugit atque repellat error nemo veniam, tempore
-          libero quae eaque, temporibus nam? Repellendus ab deleniti officiis
-          quam!
-        </p>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque odit
-          et minima excepturi, fugit atque repellat error nemo veniam, tempore
-          libero quae eaque, temporibus nam? Repellendus ab deleniti officiis
-          quam!
-        </p>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque odit
-          et minima excepturi, fugit atque repellat error nemo veniam, tempore
-          libero quae eaque, temporibus nam? Repellendus ab deleniti officiis
-          quam!
+        <?= $product['description']?>
         </p>
       </div>
     </div>

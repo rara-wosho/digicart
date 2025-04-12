@@ -9,14 +9,7 @@
         private $sold;
         private $ratings;
 
-        /**
-         * Add a new digital product to the database
-         * 
-         * @param object $conn Database connection
-         * @param array $productData Product information
-         * @param array $fileData File upload information
-         * @return bool Success status
-         */
+        // add product to database 
         public function addProduct($conn, $productData, $fileData) {
             // Sanitize input data
             $this->name = filter_var($productData['name'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -84,8 +77,14 @@
             }
         }
         
-        public function getAllProducts($conn) {
-            $query = "SELECT * FROM products ORDER BY created_at DESC";
+        // Get all products from db 
+        public function getAllProducts($conn, $category = null, $sortingField = "created_at", $sortingMethod = "DESC") {
+
+            $query = "SELECT * FROM products ORDER BY $sortingField $sortingMethod";
+
+            if($category != null && $category != "all"){
+                $query = "SELECT * FROM products WHERE category='$category' ORDER BY $sortingField $sortingMethod";
+            }
             
             $stmt = $conn->prepare($query);
             
@@ -95,15 +94,7 @@
             return $results;
         }
         
-        /**
-         * Get products by category
-         * 
-         * @param object $conn Database connection
-         * @param string $category Category name
-         * @param int $limit Number of products to retrieve (optional)
-         * @param int $offset Pagination offset (optional)
-         * @return array Array of products
-         */
+
         public function getProductsByCategory($conn, $category, $limit = null, $offset = 0) {
             $query = "SELECT * FROM products WHERE category = ? ORDER BY created_at DESC";
             
@@ -127,36 +118,18 @@
             return $products;
         }
         
-        /**
-         * Get a single product by ID
-         * 
-         * @param object $conn Database connection
-         * @param int $productId Product ID
-         * @return array|null Product data or null if not found
-         */
+        // get a specific product 
         public function getProductById($conn, $productId) {
             $query = "SELECT * FROM products WHERE product_id = ?";
             $stmt = $conn->prepare($query);
             $stmt->bind_param("i", $productId);
             $stmt->execute();
-            $result = $stmt->get_result();
+            $results = $stmt->get_result();
             
-            if ($result->num_rows > 0) {
-                return $result->fetch_assoc();
-            } else {
-                return null;
-            }
+            return $results->fetch_assoc();
         }
         
-        /**
-         * Update an existing product
-         * 
-         * @param object $conn Database connection
-         * @param int $productId Product ID
-         * @param array $productData Updated product data
-         * @param array $fileData File upload data (optional)
-         * @return bool Success status
-         */
+        // update or edit product details 
         public function updateProduct($conn, $productId, $productData, $fileData = null) {
             // Sanitize input data
             $name = filter_var($productData['name'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -241,13 +214,7 @@
             }
         }
         
-        /**
-         * Delete a product
-         * 
-         * @param object $conn Database connection
-         * @param int $productId Product ID
-         * @return bool Success status
-         */
+
         public function deleteProduct($conn, $productId) {
             // Get current product data
             $product = $this->getProductById($conn, $productId);
@@ -278,13 +245,7 @@
             }
         }
         
-        /**
-         * Search products by name or description
-         * 
-         * @param object $conn Database connection
-         * @param string $keyword Search keyword
-         * @return array Array of products
-         */
+
         public function searchProducts($conn, $keyword) {
             $search_term = "%" . $keyword . "%";
             
@@ -302,12 +263,6 @@
             return $products;
         }
         
-        /**
-         * Get all product categories
-         * 
-         * @param object $conn Database connection
-         * @return array Array of categories
-         */
         public function getAllCategories($conn) {
             $query = "SELECT DISTINCT category FROM products ORDER BY category";
             $result = $conn->query($query);
