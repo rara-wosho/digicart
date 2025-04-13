@@ -3,8 +3,6 @@
   include "includes/includes.php";
 
   // get all products 
-
-  // category parameter is optional 
   $products = $digiProduct->getAllProducts($connection);
   $category = "all";
   $sortingField = "created_at";
@@ -12,7 +10,6 @@
   $keyword = null;
 
   if($_SERVER['REQUEST_METHOD'] = "GET"){
-
 
     if(isset($_GET['category'])){
       $category = $_GET['category'];
@@ -165,13 +162,12 @@
     <div
       class="product-main-wrapper bg-body-tertiary d-flex flex-column align-items-center"
     >
-      <!-- CATEGORY FORM  -->
+      <!-- CATEGORY/SORTING FORM  -->
       <form
         action=""
         method="GET"
         class="category-form mb-3 d-flex flex-column w-100 container px-4 pt-5 pb-3"
       >
-        <!-- <h3>Choose Filters</h3>  -->
         <div style="gap:12px" class="d-flex align-items-center">
           <div class="input-group w-25">
             <div class="input-group-text">
@@ -186,28 +182,8 @@
               <option value="E-books" <?= $category == "E-books" ? "selected": ""?>>E-books</option>
             </select>
             </div>
-          <!-- <div class="categ-btns d-flex">
-            <button type="submit" name="category" value="all"  style="font-size:14px" class="border <?=$category == "all" ?"bg-secondary text-white ":"bg-body-tertiary"?> btn rounded-1 py-1 px-3 me-2">
-              All
-            </button>
-            <button type="submit" value="Templates" name="category" style="font-size:14px" class="border <?=$category == "Templates" ?"bg-secondary text-white":"bg-body-tertiary"?> rounded-1 py-1 px-3 me-2">
-              Templates
-            </button>
-            <button type="submit" value="E-books" name="category" style="font-size:14px" class="border <?=$category == "E-books" ?"bg-secondary text-white":"bg-body-tertiary"?> rounded-1 py-1 px-3 me-2">
-              E-books
-            </button>
-            <button type="submit" value="Digital Art" name="category" style="font-size:14px" class="border <?=$category == "Digital Art" ?"bg-secondary text-white":"bg-body-tertiary"?> rounded-1 py-1 px-3 me-2">
-              Digital Art
-            </button>
-            <button type="submit" value="For Kids" name="category" style="font-size:14px" class="border <?=$category == "For Kids" ?"bg-secondary text-white":"bg-body-tertiary"?> rounded-1 py-1 px-3 me-2">
-              For Kids
-            </button>
-            <button type="submit" value="Courses" name="category" style="font-size:14px" class="border <?=$category == "Courses" ?"bg-secondary text-white":"bg-body-tertiary"?> rounded-1 py-1 px-3 me-2">
-              Courses
-            </button>
-          </div> -->
+
           <!-- sorting methods  -->
-       
           <div class="input-group w-25">
             <div class="input-group-text">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-square-library-icon lucide-square-library"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 7v10"/><path d="M11 7v10"/><path d="m15 7 2 10"/></svg>
@@ -229,8 +205,8 @@
           </div>
 
           <button class="btn btn-primary text-white px-4 btn-sm">Apply</button>
+          <a href="products.php" class="btn btn-outline-danger px-4 btn-sm">Reset</a>
         </div>
-
       </form>
 
       <!-- PRODUCT ROWS  -->

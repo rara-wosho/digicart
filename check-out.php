@@ -370,11 +370,11 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-  // Get the modal instance
-  var myModal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
-  
-  // Show the modal automatically
-  myModal.show();
-});
+      // Get the modal instance
+      var myModal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
+      
+      // Show the modal automatically
+      myModal.show();
+    });
   </script>
 </html>

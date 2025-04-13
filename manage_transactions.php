@@ -2,24 +2,30 @@
 
   include "includes/includes.php";
 
-  if(isset($_SESSION['current_user']['user_id'])){
-    $transactions = $transaction->displayAllTransactions($connection);
-  }else{
-    header("location: signin.php");
+  // redirect the user if not signed in or not an admin
+  if(!isset($_SESSION['current_user']) || $_SESSION['current_user']['role'] !== "admin"){
+    header('location: signin.php');
     exit();
+  }else{
+    $transactions = $transaction->displayAllTransactions($connection);
+    $keyword = null;
+  
+    if(isset($_GET['search-transaction'])){
+      $keyword = $_GET['search-transaction'];
+      $transactions = $transaction->searchTransaction($connection, $keyword) ;
+    }
   }
 
   // get all products
 
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Purchase History</title>
+    <title>Transactions</title>
     <link rel="icon" href="images/logo.png" type="image/x-icon" />
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
@@ -41,7 +47,7 @@
     <div class="admin-dashboard-page expand-sidebar">
       <!-- SIDEBAR  -->
       <div
-        class="sidebar bg-white shadow-sm px-2 d-flex flex-column justify-content-between pb-3"
+        class="sidebar bg-white shadow-sm px-2 d-flex flex-column pb-3"
       >
         <div class="sidebar-header mb-4 py-3 d-flex align-items-center">
           <img
@@ -56,7 +62,7 @@
           </p>
         </div>
 
-        <ul class="p-0">
+        <ul class="p-0 border-bottom">
           <li>
             <a href="admin_dashboard.php" class="">
               <div
@@ -84,7 +90,7 @@
             </a>
           </li>
           <li class="active">
-            <a href="" class="">
+            <a class="">
               <div
                 class="sidebar-icon d-flex align-items-center justify-content-center"
               >
@@ -111,7 +117,7 @@
                   <path d="m9 11 1 9" />
                 </svg>
               </div>
-              <p class="sidebar-label mb-0 px-2">Purchase History</p>
+              <p class="sidebar-label mb-0 px-2">Transactions</p>
             </a>
           </li>
           <li class="">
@@ -168,7 +174,7 @@
           </li>
         </ul>
 
-        <a href="logout-logic.php" class="mt-auto d-flex text-black py-2 px-3"
+        <a style="background-color:rgb(240,240,245)" href="logout-logic.php" class="rounded-3 d-flex  align-items-center text-black py-2 px-3"
           ><div class="sidebar-icon">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -212,18 +218,17 @@
             <path d="M12 3v18" />
           </svg>
         </button>
-        <h4 class="mb-0">Purchase History</h4>
-        <div class="d-flex align-items-center ms-auto">
-          <img
-            width="30"
-            height="30"
-            src="images/icons/boy.png"
-            alt=""
-            class="rounded-circle"
-          />
-
-          <p class="mb-0 ms-2 fw-semibold">Admin User</p>
-        </div>
+        <h4 class="mb-0">Transactions</h4>
+        <a href="profile.php" class="d-flex align-items-center ms-auto">
+            <img
+                width="30"
+                height="30"
+                src="images/icons/user.png"
+                alt=""
+                class="rounded-circle"
+            />
+            <p class="mb-0 ms-2 fw-semibold"><?=$_SESSION['current_user']['firstname']?></p>
+        </a>
       </div>
 
       <!-- MAIN CONTENT  -->
@@ -231,10 +236,11 @@
         <!-- content header  -->
         <div class="main-content-header d-flex align-items-center justify-content-between mb-3">
           <h5 class="mb-0 text-muted text-nowrap text-primary">Purchases: <?=$transactions->num_rows?></h5>
-          <div class="input-group w-50">
-            <input type="text" placeholder="Search..." class="form-control">
-            <span class="input-group-text bg-primary text-white">Search</span>
-          </div>
+          <form method="GET" class="input-group w-50">
+            <input value="<?=$keyword ?>" name="search-transaction" type="text" placeholder="Search..." class="form-control">
+            <button type="submit" class="input-group-text bg-primary text-white">Search</button>
+            <a href="manage_transactions.php" type="submit" name="reset-btn" class="input-group-text bg-danger text-white">Reset</a>
+          </form>
         </div>
 
         <table class="table table-striped">
@@ -252,19 +258,24 @@
             </tr>
           </thead>
           <tbody>
-            <?php while($row = $transactions->fetch_assoc()): ?>
-              <tr>
-                <td>1</td>
-                <td><?=$row['fullname']?></td>
-                <td><?=$row['product_name']?></td>
-                <td><?=$row['price']?></td>
-                <td><?=$row['price']?></td>
-                <td><?=$row['fulladdress']?></td>
-                <td><?=$row['email']?></td>
-                <td><?=$row['payment_option']?></td>
-                <td><?=$row['transaction_date']?></td>
-              </tr>
-            <?php endwhile ?>
+              <?php
+                  $count = 1;
+                  while($row = $transactions->fetch_assoc()){
+              ?>
+                  <tr>
+                    <td><?=$count++?></td>
+                    <td><?=$row['fullname']?></td>
+                    <td><?=$row['product_name']?></td>
+                    <td><?=$row['price']?></td>
+                    <td><?=$row['price']?></td>
+                    <td><?=$row['fulladdress']?></td>
+                    <td><?=$row['email']?></td>
+                    <td><?=$row['payment_option']?></td>
+                    <td><?=$row['transaction_date']?></td>
+                  </tr>
+              <?php
+                  }
+              ?>
           </tbody>
         </table>
       </div>

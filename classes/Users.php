@@ -96,10 +96,17 @@
                 $db_password = $user_record['password'];
                 $id = $user_record['user_id'];
                 $role = $user_record['role'];
+                $isBan = $user_record['isBan'];
                 
                 // Using plain text password comparison (should use password_verify in production)
                 if ($this->password == $db_password) {
                 // password verify is not working: if(password_verify($this->password, $db_password)) {
+                    
+                    // redirect to ban page if banned  
+                    if($isBan){
+                        header('location: account-ban.html');
+                        exit();
+                    }
                     
                     // Set session variables for current user
                     $_SESSION['current_user'] = $user_record;
@@ -111,6 +118,7 @@
                         exit();
                     }
                     
+
                     header('location: products.php');
                     exit();
                 } else {
@@ -193,15 +201,15 @@
             return $result->fetch_all(MYSQLI_ASSOC);
         }
         
-        public function uploadPfp($conn, $userID){
-
-        }
-
-        public function displayUsers($conn){
+        public function displayAllUsers($conn){
             $sql = "SELECT * FROM users";
 
             $result = $conn->query($sql);
             return $result;
+        }
+
+        public function uploadPfp($conn, $userID){
+
         }
 
         public function searchUser($conn, $searchTerm) {
@@ -211,12 +219,18 @@
                        OR users.firstname LIKE '%$searchTerm%'
                        OR users.barangay LIKE '%$searchTerm%'
                        OR users.province LIKE '%$searchTerm%'
-                       OR users.city LIKE '%$searchTerm%'
+                       OR users.municipality LIKE '%$searchTerm%'
                        OR users.lastname LIKE '%$searchTerm%'";
         
             $result = $conn->query($sql);
         
             return $result;
+        }
+
+        public function toggleBan($conn, $userId, $status){
+            $q = "UPDATE users SET isBan=$status WHERE user_id=$userId";
+
+            return $result = $conn->query($q);
         }
         
 

@@ -1,5 +1,9 @@
 <?php
   include "includes/includes.php";
+
+  $topSellers = $digiProduct->topProducts($connection, 4);
+  $newProducts = $digiProduct->newProducts($connection, 4);
+
 ?>
 
 <!DOCTYPE html>
@@ -151,7 +155,6 @@
         >
           <img width="50" height="50" src="images/icons/windows.png" alt="" />
           <h4 class="mb-0 mt-2">Templates</h4>
-          <p class="mb-0 text-secondary mt-2">58</p>
         </div>
         <div
           class="py-4 px-4 rounded-2 mx-2 category-card border d-flex justify-content-center flex-column align-items-center"
@@ -162,22 +165,25 @@
             src="images/icons/digital-library.png"
             alt=""
           />
-          <h4 class="mb-0 mt-2">eBooks</h4>
-          <p class="mb-0 text-secondary mt-2">68</p>
+          <h4 class="mb-0 mt-2">E-books</h4>
         </div>
         <div
           class="py-4 px-4 rounded-2 mx-2 category-card border d-flex justify-content-center flex-column align-items-center"
         >
           <img width="50" height="50" src="images/icons/computer.png" alt="" />
-          <h4 class="mb-0 mt-2">Tools</h4>
-          <p class="mb-0 text-secondary mt-2">34</p>
+          <h4 class="mb-0 mt-2">Digital Art</h4>
         </div>
         <div
           class="py-4 px-4 rounded-2 mx-2 category-card border d-flex justify-content-center flex-column align-items-center"
         >
           <img width="50" height="50" src="images/icons/boy.png" alt="" />
           <h4 class="mb-0 mt-2">For Kids</h4>
-          <p class="mb-0 text-secondary mt-2">29</p>
+        </div>
+        <div
+          class="py-4 px-4 rounded-2 mx-2 category-card border d-flex justify-content-center flex-column align-items-center"
+        >
+          <img width="50" height="50" src="images/icons/boy.png" alt="" />
+          <h4 class="mb-0 mt-2">Courses</h4>
         </div>
       </div>
     </section>
@@ -194,173 +200,51 @@
         style="gap: 12px"
         class="d-flex align-items-center justify-content-center container"
       >
-        <a href="product-details.html?id=15" class="card">
-          <div
-            class="card-ratings d-flex align-items-center bg-white shadow-sm py-1 px-2 rounded-1"
-          >
-            <p class="mb-0 me-1 fw-semibold">20</p>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="13"
-              height="13"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="orange"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="lucide lucide-star-icon lucide-star"
+        <?php while($row = $newProducts->fetch_assoc()):?>
+          <a href="product-details.php?id=<?=$row['product_id']?>" class="card">
+            <div
+              class="card-ratings d-flex align-items-center bg-white shadow-sm py-1 px-2 rounded-1"
             >
-              <path
-                d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"
-              />
-            </svg>
-          </div>
-          <img
-            src="https://i.pinimg.com/736x/47/66/4c/47664c7112e219e07608fcaf48c23d19.jpg"
-            class="card-img-top"
-            alt="..."
-          />
-          <div class="card-body">
-            <h5 class="card-title text-truncate">Card title</h5>
-
-            <p class="card-text text-truncate text-muted">
-              Some quick example text to build on the card title and make up the
-              bulk of the card's content.
-            </p>
-
-            <div class="d-flex align-items-end justify-content-between">
-              <h4 class="text-primary fw-bold">₱399</h4>
-              <p class="mb-2 card-sold text-secondary">233 sold</p>
+              <p class="mb-0 me-1 fw-semibold">20</p>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="13"
+                height="13"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="orange"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-star-icon lucide-star"
+              >
+                <path
+                  d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"
+                />
+              </svg>
             </div>
-          </div>
-        </a>
-        <a href="product-details.html?id=15" class="card">
-          <div
-            class="card-ratings d-flex align-items-center bg-white shadow-sm py-1 px-2 rounded-1"
-          >
-            <p class="mb-0 me-1 fw-semibold">20</p>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="13"
-              height="13"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="orange"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="lucide lucide-star-icon lucide-star"
-            >
-              <path
-                d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"
-              />
-            </svg>
-          </div>
-          <img
-            src="https://i.pinimg.com/736x/47/66/4c/47664c7112e219e07608fcaf48c23d19.jpg"
-            class="card-img-top"
-            alt="..."
-          />
-          <div class="card-body">
-            <h5 class="card-title text-truncate">Card title</h5>
+            <img
+              src="<?=$row['image_path']?>"
+              class="card-img-top"
+              alt="..."
+            />
+            <div class="card-body">
+              <h5 class="card-title text-truncate"><?=$row['name']?></h5>
 
-            <p class="card-text text-truncate text-muted">
-              Some quick example text to build on the card title and make up the
-              bulk of the card's content.
-            </p>
+              <p class="card-text text-truncate text-muted">
+                <?=$row['description']?>
+              </p>
 
-            <div class="d-flex align-items-end justify-content-between">
-              <h4 class="text-primary fw-bold">₱399</h4>
-              <p class="mb-2 card-sold text-secondary">233 sold</p>
+              <div class="d-flex align-items-end justify-content-between">
+                <h4 class="text-primary fw-bold">₱<?=$row['price']?></h4>
+                <p class="mb-2 card-sold text-secondary"><?=$row['sold']?> sold</p>
+              </div>
             </div>
-          </div>
-        </a>
-        <a href="product-details.html?id=15" class="card">
-          <div
-            class="card-ratings d-flex align-items-center bg-white shadow-sm py-1 px-2 rounded-1"
-          >
-            <p class="mb-0 me-1 fw-semibold">20</p>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="13"
-              height="13"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="orange"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="lucide lucide-star-icon lucide-star"
-            >
-              <path
-                d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"
-              />
-            </svg>
-          </div>
-          <img
-            src="https://i.pinimg.com/736x/47/66/4c/47664c7112e219e07608fcaf48c23d19.jpg"
-            class="card-img-top"
-            alt="..."
-          />
-          <div class="card-body">
-            <h5 class="card-title text-truncate">Card title</h5>
-
-            <p class="card-text text-truncate text-muted">
-              Some quick example text to build on the card title and make up the
-              bulk of the card's content.
-            </p>
-
-            <div class="d-flex align-items-end justify-content-between">
-              <h4 class="text-primary fw-bold">₱399</h4>
-              <p class="mb-2 card-sold text-secondary">233 sold</p>
-            </div>
-          </div>
-        </a>
-        <a href="product-details.html?id=15" class="card">
-          <div
-            class="card-ratings d-flex align-items-center bg-white shadow-sm py-1 px-2 rounded-1"
-          >
-            <p class="mb-0 me-1 fw-semibold">20</p>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="13"
-              height="13"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="orange"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="lucide lucide-star-icon lucide-star"
-            >
-              <path
-                d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"
-              />
-            </svg>
-          </div>
-          <img
-            src="https://i.pinimg.com/736x/47/66/4c/47664c7112e219e07608fcaf48c23d19.jpg"
-            class="card-img-top"
-            alt="..."
-          />
-          <div class="card-body">
-            <h5 class="card-title text-truncate">Card title</h5>
-
-            <p class="card-text text-truncate text-muted">
-              Some quick example text to build on the card title and make up the
-              bulk of the card's content.
-            </p>
-
-            <div class="d-flex align-items-end justify-content-between">
-              <h4 class="text-primary fw-bold">₱399</h4>
-              <p class="mb-2 card-sold text-secondary">233 sold</p>
-            </div>
-          </div>
-        </a>
+          </a>
+        <?php endwhile ?>
       </div>
 
-      <a href="products.html" class="btn bg-accent fw-semibold mt-5"
+      <a href="products.php" class="btn bg-accent fw-semibold mt-5"
         >View Products</a
       >
     </div>
@@ -378,174 +262,52 @@
       <div
         style="gap: 12px"
         class="d-flex align-items-center justify-content-center container"
-      >
-        <a href="product-details.html?id=15" class="card">
-          <div
-            class="card-ratings d-flex align-items-center bg-white shadow-sm py-1 px-2 rounded-1"
-          >
-            <p class="mb-0 me-1 fw-semibold">20</p>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="13"
-              height="13"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="orange"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="lucide lucide-star-icon lucide-star"
+      > 
+        <?php while($row = $topSellers->fetch_assoc()):?>
+          <a href="product-details.php?id=<?=$row['product_id']?>" class="card">
+            <div
+              class="card-ratings d-flex align-items-center bg-white shadow-sm py-1 px-2 rounded-1"
             >
-              <path
-                d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"
-              />
-            </svg>
-          </div>
-          <img
-            src="https://i.pinimg.com/736x/47/66/4c/47664c7112e219e07608fcaf48c23d19.jpg"
-            class="card-img-top"
-            alt="..."
-          />
-          <div class="card-body">
-            <h5 class="card-title text-truncate">Card title</h5>
-
-            <p class="card-text text-truncate text-muted">
-              Some quick example text to build on the card title and make up the
-              bulk of the card's content.
-            </p>
-
-            <div class="d-flex align-items-end justify-content-between">
-              <h4 class="text-primary fw-bold">₱399</h4>
-              <p class="mb-2 card-sold text-secondary">233 sold</p>
+              <p class="mb-0 me-1 fw-semibold">20</p>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="13"
+                height="13"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="orange"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-star-icon lucide-star"
+              >
+                <path
+                  d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"
+                />
+              </svg>
             </div>
-          </div>
-        </a>
-        <a href="product-details.html?id=15" class="card">
-          <div
-            class="card-ratings d-flex align-items-center bg-white shadow-sm py-1 px-2 rounded-1"
-          >
-            <p class="mb-0 me-1 fw-semibold">20</p>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="13"
-              height="13"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="orange"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="lucide lucide-star-icon lucide-star"
-            >
-              <path
-                d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"
-              />
-            </svg>
-          </div>
-          <img
-            src="https://i.pinimg.com/736x/47/66/4c/47664c7112e219e07608fcaf48c23d19.jpg"
-            class="card-img-top"
-            alt="..."
-          />
-          <div class="card-body">
-            <h5 class="card-title text-truncate">Card title</h5>
+            <img
+              src="<?=$row['image_path']?>"
+              class="card-img-top"
+              alt="..."
+            />
+            <div class="card-body">
+              <h5 class="card-title text-truncate"><?=$row['name']?></h5>
 
-            <p class="card-text text-truncate text-muted">
-              Some quick example text to build on the card title and make up the
-              bulk of the card's content.
-            </p>
+              <p class="card-text text-truncate text-muted">
+                <?=$row['description']?>
+              </p>
 
-            <div class="d-flex align-items-end justify-content-between">
-              <h4 class="text-primary fw-bold">₱399</h4>
-              <p class="mb-2 card-sold text-secondary">233 sold</p>
+              <div class="d-flex align-items-end justify-content-between">
+                <h4 class="text-primary fw-bold">₱<?=$row['price']?></h4>
+                <p class="mb-2 card-sold text-secondary"><?=$row['sold']?> sold</p>
+              </div>
             </div>
-          </div>
-        </a>
-        <a href="product-details.html?id=15" class="card">
-          <div
-            class="card-ratings d-flex align-items-center bg-white shadow-sm py-1 px-2 rounded-1"
-          >
-            <p class="mb-0 me-1 fw-semibold">20</p>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="13"
-              height="13"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="orange"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="lucide lucide-star-icon lucide-star"
-            >
-              <path
-                d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"
-              />
-            </svg>
-          </div>
-          <img
-            src="https://i.pinimg.com/736x/47/66/4c/47664c7112e219e07608fcaf48c23d19.jpg"
-            class="card-img-top"
-            alt="..."
-          />
-          <div class="card-body">
-            <h5 class="card-title text-truncate">Card title</h5>
-
-            <p class="card-text text-truncate text-muted">
-              Some quick example text to build on the card title and make up the
-              bulk of the card's content.
-            </p>
-
-            <div class="d-flex align-items-end justify-content-between">
-              <h4 class="text-primary fw-bold">₱399</h4>
-              <p class="mb-2 card-sold text-secondary">233 sold</p>
-            </div>
-          </div>
-        </a>
-        <a href="product-details.html?id=15" class="card">
-          <div
-            class="card-ratings d-flex align-items-center bg-white shadow-sm py-1 px-2 rounded-1"
-          >
-            <p class="mb-0 me-1 fw-semibold">20</p>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="13"
-              height="13"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="orange"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="lucide lucide-star-icon lucide-star"
-            >
-              <path
-                d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"
-              />
-            </svg>
-          </div>
-          <img
-            src="https://i.pinimg.com/736x/47/66/4c/47664c7112e219e07608fcaf48c23d19.jpg"
-            class="card-img-top"
-            alt="..."
-          />
-          <div class="card-body">
-            <h5 class="card-title text-truncate">Card title</h5>
-
-            <p class="card-text text-truncate text-muted">
-              Some quick example text to build on the card title and make up the
-              bulk of the card's content.
-            </p>
-
-            <div class="d-flex align-items-end justify-content-between">
-              <h4 class="text-primary fw-bold">₱399</h4>
-              <p class="mb-2 card-sold text-secondary">233 sold</p>
-            </div>
-          </div>
-        </a>
+          </a>
+        <?php endwhile ?>
       </div>
 
-      <a href="products.html" class="btn bg-accent fw-semibold mt-5"
+      <a href="products.php" class="btn bg-accent fw-semibold mt-5"
         >View Products</a
       >
     </div>

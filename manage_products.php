@@ -2,9 +2,41 @@
 
   include "includes/includes.php";
 
+  // redirect the user if not signed in or not an admin
+  if(!isset($_SESSION['current_user']) || $_SESSION['current_user']['role'] !== "admin"){
+    header('location: signin.php');
+    exit();
+  }
 
   // get all products
   $products = $digiProduct->getAllProducts($connection);
+  $category = "all";
+  $sortingField = "created_at";
+  $sortingMethod = "DESC";
+  $keyword = null;
+
+  if($_SERVER['REQUEST_METHOD'] = "GET"){
+
+    if(isset($_GET['category'])){
+      $category = $_GET['category'];
+    }
+
+    if(isset($_GET['sorting-field'])){
+      $sortingField = $_GET['sorting-field'];
+    }
+
+    if(isset($_GET['sorting-field'])){
+      $sortingMethod = $_GET['sorting-method'];
+    }
+  
+    if(isset($_GET['search-input'])){
+      $keyword = $_GET['search-input'];
+      $products = $digiProduct->searchProducts($connection, $keyword) ;
+    }else{
+      $products = $digiProduct->getAllProducts($connection, $category, $sortingField, $sortingMethod);
+    }
+    
+  }
 
 ?>
 
@@ -78,7 +110,7 @@
             </a>
           </li>
           <li class="">
-            <a href="manage_orders.html" class="">
+            <a href="manage_transactions.php" class="">
               <div
                 class="sidebar-icon d-flex align-items-center justify-content-center"
               >
@@ -105,11 +137,11 @@
                   <path d="m9 11 1 9" />
                 </svg>
               </div>
-              <p class="sidebar-label mb-0 px-2">Orders</p>
+              <p class="sidebar-label mb-0 px-2">Transactions</p>
             </a>
           </li>
           <li class="">
-            <a href="manage_users.html" class="">
+            <a href="manage_users.php" class="">
               <div
                 class="sidebar-icon d-flex align-items-center justify-content-center"
               >
@@ -162,7 +194,7 @@
           </li>
         </ul>
 
-        <a style="background-color:rgb(240,240,245)" href="" class="rounded-3 d-flex  align-items-center text-black py-2 px-3"
+        <a style="background-color:rgb(240,240,245)" href="logout-logic.php" class="rounded-3 d-flex  align-items-center text-black py-2 px-3"
           ><div class="sidebar-icon">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -211,20 +243,31 @@
         </div>
 
         <div class="d-flex align-items-center">
-          <img
-            width="30"
-            height="30"
-            src="images/icons/boy.png"
-            alt=""
-            class="rounded-circle"
-          />
-
-          <p class="mb-0 ms-2 fw-semibold"><?=$_SESSION['current_user']['firstname']?></p>
+          <!-- Button trigger modal -->
+          <button
+            type="button"
+            class="btn btn-primary me-4"
+            data-bs-toggle="modal"
+            data-bs-target="#exampleModal"
+          >
+            Add New Product
+          </button>
+          <a href="profile.php" class="d-flex align-items-center">
+              <img
+                  width="30"
+                  height="30"
+                  src="images/icons/user.png"
+                  alt=""
+                  class="rounded-circle"
+              />
+              <p class="mb-0 ms-2 fw-semibold"><?=$_SESSION['current_user']['firstname']?></p>
+          </a>
         </div>
       </div>
 
       <!-- main content  -->
       <div class="bg-white p-4 shadow-sm rounded-2 m-3 pe-4">
+
           <!-- feedback message for adding product  -->
           <?php 
               if(isset($_SESSION['add_product_error'])){
@@ -249,34 +292,107 @@
               }
           ?>
 
+          <!-- FEEDBACK FOR UPDATING PRODUCT  -->
+          <?php 
+              if(isset($_SESSION['update_product_success'])){
+                  echo '
+                      <div class="alert alert-success alert-dismissible fade show" role="alert">
+                          ' . $_SESSION["update_product_success"] . '
+                          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                      </div>
+                  ';
+                  unset($_SESSION['update_product_success']);
+              }
+              if(isset($_SESSION['delete_product_success'])){
+                  echo '
+                      <div class="alert alert-success alert-dismissible fade show" role="alert">
+                          ' . $_SESSION["delete_product_success"] . '
+                          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                      </div>
+                  ';
+                  unset($_SESSION['delete_product_success']);
+              }
+              if(isset($_SESSION['delete_product_error'])){
+                  echo '
+                      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                          ' . $_SESSION["delete_product_error"] . '
+                          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                      </div>
+                  ';
+                  unset($_SESSION['delete_product_error']);
+              }
+          ?>
+
         <!-- product page header  -->
-        <div class="d-flex align-items-center justify-content-between mt-1">
+        <div class="d-flex align-items-center mt-1">
           <h5 class="text-primary mb-0">Total Products: <?= $products->num_rows?></h5>
-          <!-- Button trigger modal -->
-          <button
-            type="button"
-            class="btn btn-primary"
-            data-bs-toggle="modal"
-            data-bs-target="#exampleModal"
-          >
-            Add New Product
-          </button>
+
+          <form method="GET" class="input-group w-50 ms-auto me-2">
+            <input value="<?=$keyword?>" type="text" name="search-input" class="form-control py-0" placeholder="Find your perfect digital product...">
+            <button class="input-group-text bg-primary text-white">Search</button>
+          </form>
+          <a href="manage_products.php" class="input-group-text bg-danger text-white">Reset</a>
         </div>
 
+        <!-- FILTER SECTION  -->
+        <form
+        action=""
+        method="GET"
+        class="category-form d-flex flex-column w-100 mt-3"
+        >
+        <div style="gap:12px" class="d-flex align-items-center justify-content-end">
+            <div class="input-group">
+              <div class="input-group-text">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chart-column-stacked-icon lucide-chart-column-stacked"><path d="M11 13H7"/><path d="M19 9h-4"/><path d="M3 3v16a2 2 0 0 0 2 2h16"/><rect x="15" y="5" width="4" height="12" rx="1"/><rect x="7" y="8" width="4" height="9" rx="1"/></svg>
+              </div>
+              <select name="category" class="form-select w-25 py-1">
+                <option value="all" <?= $category == "all" ? "selected": ""?>>All Categories</option>
+                <option value="Templates" <?= $category == "Templates" ? "selected": ""?>>Templates</option>
+                <option value="For Kids" <?= $category == "For Kids" ? "selected": ""?>>For Kids</option>
+                <option value="Courses" <?= $category == "Courses" ? "selected": ""?>>Courses</option>
+                <option value="Digital Art" <?= $category == "Digital Art" ? "selected": ""?>>Digital Art</option>
+                <option value="E-books" <?= $category == "E-books" ? "selected": ""?>>E-books</option>
+              </select>
+              </div>
+
+            <!-- sorting methods  -->
+            <div class="input-group w-25">
+              <div class="input-group-text">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-square-library-icon lucide-square-library"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 7v10"/><path d="M11 7v10"/><path d="m15 7 2 10"/></svg>
+              </div>
+              <select name="sorting-field" class="form-select w-25 py-1">
+                <option value="price" <?= $sortingField == "price" ? "selected": ""?>>Price</option>
+                <option value="created_at" <?= $sortingField == "created_at" ? "selected": ""?>>Date</option>
+                <option value="sold" <?= $sortingField == "sold" ? "selected": ""?>>Sales</option>
+              </select>
+            </div>
+            <div  class="input-group w-25">
+              <div class="input-group-text">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-down-icon lucide-arrow-up-down"><path d="m21 16-4 4-4-4"/><path d="M17 20V4"/><path d="m3 8 4-4 4 4"/><path d="M7 4v16"/></svg>
+              </div>
+              <select name="sorting-method" class="form-select w-25 py-1">
+                <option value="ASC" <?= $sortingMethod == "ASC" ? "selected": ""?>>asc</option>
+                <option value="DESC" <?= $sortingMethod == "DESC" ? "selected": ""?>>desc</option>
+              </select>
+            </div>
+
+            <button class="btn btn-primary text-white px-4 btn-sm">Apply</button>
+          </div>
+        </form>
         
         <!-- table for product list  -->
         <table class="table mt-4 admin-product-list-table">
           <thead>
             <tr>
-              <th scope="col">#</th>
-              <th scope="col">Image</th>
-              <th scope="col">Name</th>
-              <th scope="col">Description</th>
-              <th scope="col">Price</th>
-              <th scope="col">Category</th>
-              <th scope="col">Sold</th>
-              <th scope="col">Ratings</th>
-              <th scope="col">Actions</th>
+              <th style="background:rgb(240,245,255);" scope="col">#</th>
+              <th style="background:rgb(240,245,255);" scope="col">Image</th>
+              <th style="background:rgb(240,245,255);" scope="col">Name</th>
+              <th style="background:rgb(240,245,255);" scope="col">Description</th>
+              <th style="background:rgb(240,245,255);" scope="col">Price</th>
+              <th style="background:rgb(240,245,255);" scope="col">Category</th>
+              <th style="background:rgb(240,245,255);" scope="col">Sold</th>
+              <th style="background:rgb(240,245,255);" scope="col">Ratings</th>
+              <th style="background:rgb(240,245,255);" scope="col">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -299,10 +415,10 @@
                 <td><?= $row['ratings'] ?></td>
                 <td>
                   <div style="12px" class="d-flex align-items-center">
-                    <a href="" class="btn">
+                    <a href="edit_product_form.php?product_id=<?=$row['product_id']?>" class="btn">
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pencil-icon lucide-pencil"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></svg>
                     </a>
-                    <a href="" class="btn">
+                    <a href="delete-product-logic.php?product_id=<?=$row['product_id']?>" class="btn">
                       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-icon lucide-trash"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
                     </a>
                   </div>
@@ -349,6 +465,7 @@
                     >Product Name</label
                   >
                   <input
+                    value="<?=$editProductData['name'] ?? ""?>"
                     name="name"
                     type="text"
                     class="form-control"
@@ -420,7 +537,7 @@
                     Close
                   </button>
                   <button type="submit" class="btn btn-primary">
-                    Save changes
+                    Add Product
                   </button>
                 </div>
               </form>
@@ -447,6 +564,7 @@
           adminDashboard.toggleClass("expand-sidebar");
         });
       });
+
     </script>
   </body>
 </html>

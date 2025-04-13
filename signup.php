@@ -33,7 +33,7 @@ include "includes/includes.php";
           top: 1rem;
           left: 1rem;
         "
-        href="index.html"
+        href="index.php"
         class="btn bg-white rounded-circle d-flex align-items-center justify-content-center"
       >
         <svg

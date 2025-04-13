@@ -128,7 +128,7 @@
             
             return $results->fetch_assoc();
         }
-        
+
         // update or edit product details 
         public function updateProduct($conn, $productId, $productData, $fileData = null) {
             // Sanitize input data
@@ -136,115 +136,130 @@
             $description = filter_var($productData['description'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $price = filter_var($productData['price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
             $category = filter_var($productData['category'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-            
-            // Get current product data
-            $current_product = $this->getProductById($conn, $productId);
-            if (!$current_product) {
-                $_SESSION['product_error'] = "Product not found";
-                return false;
-            }
-            
-            $image_path = $current_product['image_path'];
-            $file_path = $current_product['file_path'];
-            
-            // Handle image upload if provided
-            if (isset($fileData['image']) && $fileData['image']['size'] > 0) {
+            $productId = (int)$productId;
+        
+            // Initialize variables
+            $image_path = null;
+            $update_image = false;
+        
+            // Handle image upload if new image is provided
+            if ($fileData && isset($fileData['image']) && $fileData['image']['error'] == UPLOAD_ERR_OK) {
+                $allowed_image_ext = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+                $image_ext = strtolower(pathinfo($fileData['image']['name'], PATHINFO_EXTENSION));
+                
+                // Validate image type
+                if (!in_array($image_ext, $allowed_image_ext)) {
+                    $_SESSION['update_product_error'] = "Invalid image format. Allowed formats: " . implode(', ', $allowed_image_ext);
+                    header("location: manage_products.php");
+                    exit();
+                }
+                
+                // Generate new image name and path
                 $image_name = time() . '_' . $fileData['image']['name'];
                 $image_tmp = $fileData['image']['tmp_name'];
                 $image_destination = 'uploads/images/' . $image_name;
-                $allowed_image_ext = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
-                
-                $image_ext = strtolower(pathinfo($fileData['image']['name'], PATHINFO_EXTENSION));
-                
-                if (!in_array($image_ext, $allowed_image_ext)) {
-                    $_SESSION['product_error'] = "Invalid image format. Allowed formats: " . implode(', ', $allowed_image_ext);
-                    return false;
-                }
                 
                 if (move_uploaded_file($image_tmp, $image_destination)) {
-                    // Delete old image if it exists
-                    if (file_exists($current_product['image_path'])) {
-                        unlink($current_product['image_path']);
-                    }
                     $image_path = $image_destination;
+                    $update_image = true;
                 } else {
-                    $_SESSION['product_error'] = "Failed to upload image";
-                    return false;
+                    $_SESSION['update_product_error'] = "Failed to upload new image";
+                    header("location: manage_products.php");
+                    exit();
                 }
             }
-            
-            // Handle digital file upload if provided
-            if (isset($fileData['digital_file']) && $fileData['digital_file']['size'] > 0) {
-                $file_name = time() . '_' . $fileData['digital_file']['name'];
-                $file_tmp = $fileData['digital_file']['tmp_name'];
-                $file_destination = 'uploads/products/' . $file_name;
-                $allowed_file_ext = ['pdf', 'zip', 'mp3', 'mp4', 'epub', 'psd', 'ai'];
-                
-                $file_ext = strtolower(pathinfo($fileData['digital_file']['name'], PATHINFO_EXTENSION));
-                
-                if (!in_array($file_ext, $allowed_file_ext)) {
-                    $_SESSION['product_error'] = "Invalid file format. Allowed formats: " . implode(', ', $allowed_file_ext);
-                    return false;
+        
+            try {
+                // Build the update query dynamically based on provided data
+                $query = "UPDATE products SET name = ?, description = ?, price = ?, category = ?";
+                $params = [$name, $description, $price, $category];
+                $types = "ssds"; // string, string, double, string
+        
+                // Add image to update if new image was uploaded
+                if ($update_image) {
+                    $query .= ", image_path = ?";
+                    $params[] = $image_path;
+                    $types .= "s";
                 }
+        
+                $query .= " WHERE product_id = ?";
+                $params[] = $productId;
+                $types .= "i";
+        
+                // Prepare and execute the statement
+                $stmt = $conn->prepare($query);
+                $stmt->bind_param($types, ...$params);
                 
-                if (move_uploaded_file($file_tmp, $file_destination)) {
-                    // Delete old file if it exists
-                    if (file_exists($current_product['file_path'])) {
-                        unlink($current_product['file_path']);
+                if ($stmt->execute()) {
+                    // Only update session if rows were affected
+                    if ($stmt->affected_rows > 0) {
+                        $_SESSION['update_product_success'] = "Product updated successfully.";
+                    } else {
+                        $_SESSION['update_product_notice'] = "No changes were made to the product.";
                     }
-                    $file_path = $file_destination;
                 } else {
-                    $_SESSION['product_error'] = "Failed to upload digital file";
-                    return false;
+                    $_SESSION['update_product_error'] = "Update failed: " . $stmt->error;
                 }
+                
+            } catch (Exception $e) {
+                $_SESSION['update_product_error'] = "Error updating product: " . $e->getMessage();
             }
-            
-            // Update product in database
-            $update_query = "UPDATE products SET name = ?, description = ?, price = ?, category = ?, 
-                            image_path = ?, file_path = ?, updated_at = NOW() WHERE product_id = ?";
-            
-            $stmt = $conn->prepare($update_query);
-            $stmt->bind_param("ssdsssi", $name, $description, $price, $category, $image_path, $file_path, $productId);
-            
-            if ($stmt->execute()) {
-                return true;
-            } else {
-                $_SESSION['product_error'] = "Database error: " . $conn->error;
-                return false;
+
+            if(isset($_SESSION['update_product_error']) || isset($_SESSION['update_product_notice']) ){
+                header("location: edit_product_form.php?product_id=$productId");
+                exit();
             }
-        }
+
+            if(isset($_SESSION['update_product_success']) ){
+                header("location: manage_products.php");
+                exit();
+            }
+        }   
         
 
         public function deleteProduct($conn, $productId) {
-            // Get current product data
-            $product = $this->getProductById($conn, $productId);
-            if (!$product) {
-                $_SESSION['product_error'] = "Product not found";
-                return false;
-            }
-            
-            // Delete the product files
-            if (file_exists($product['image_path'])) {
-                unlink($product['image_path']);
-            }
-            
-            if (file_exists($product['file_path'])) {
-                unlink($product['file_path']);
-            }
-            
-            // Delete from database
-            $delete_query = "DELETE FROM products WHERE product_id = ?";
-            $stmt = $conn->prepare($delete_query);
-            $stmt->bind_param("i", $productId);
-            
-            if ($stmt->execute()) {
-                return true;
-            } else {
-                $_SESSION['product_error'] = "Database error: " . $conn->error;
-                return false;
+        
+            try {
+                // Begin transaction to ensure data consistency
+                $conn->begin_transaction();
+        
+                // First delete the associated image file if it exists
+                $stmt = $conn->prepare("SELECT image_path FROM products WHERE product_id = ?");
+                $stmt->bind_param("i", $productId);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                
+                if ($result->num_rows > 0) {
+                    $product = $result->fetch_assoc();
+                    if (!empty($product['image_path']) && file_exists($product['image_path'])) {
+                        unlink($product['image_path']);
+                    }
+                }
+        
+                // 2. Then delete the product record
+                $stmt = $conn->prepare("DELETE FROM products WHERE product_id = ?");
+                $stmt->bind_param("i", $productId);
+                $stmt->execute();
+        
+                // Check if any row was actually deleted
+                if ($stmt->affected_rows > 0) {
+                    $conn->commit();
+                    $_SESSION['delete_product_success'] = "Product deleted successfully.";
+                } else {
+                    $conn->rollback();
+                    $_SESSION['delete_product_error'] = "No product found with that ID.";
+                }
+        
+                header("location: manage_products.php");
+                exit();
+        
+            } catch (Exception $e) {
+                $conn->rollback();
+                $_SESSION['delete_product_error'] = "Error deleting product: " . $e->getMessage();
+                header("location: manage_products.php");
+                exit();
             }
         }
-        
 
         public function searchProducts($conn, $keyword) {
             $search_term = "%" . $keyword . "%";
@@ -258,16 +273,15 @@
             return $result;
         }
         
-        public function getAllCategories($conn) {
-            $query = "SELECT DISTINCT category FROM products ORDER BY category";
-            $result = $conn->query($query);
-            
-            $categories = [];
-            while ($row = $result->fetch_assoc()) {
-                $categories[] = $row['category'];
-            }
-            
-            return $categories;
+        public function topProducts($conn, $limit = 5){
+            $q = "SELECT * FROM products WHERE sold > 0 ORDER BY sold DESC LIMIT $limit";
+
+            return $result = $conn->query($q);
+        }
+        public function newProducts($conn,  $limit = 5){
+            $q = "SELECT * FROM products ORDER BY created_at DESC LIMIT $limit";
+
+            return $result = $conn->query($q);
         }
     }
 ?>

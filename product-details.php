@@ -140,9 +140,9 @@
             </li>
           </ul>
           <div class="d-flex justify-content-center ms-3">
-          <?php
+            <?php
               if(isset($_SESSION['current_user'])){
-                echo('<a href="profile.php"><img width="32"  height="32" src="images/icons/user.png" alt=""></a>');
+                echo('<a class="mb-0 d-flex align-items-center" href="profile.php"><img class="me-2" width="32"  height="32" src="images/icons/user.png" alt="">'.$_SESSION['current_user']['firstname'].'</a>');
               }else{
                 echo('<a href="signin.php" class="btn btn-primary">Sign In</a>');
               }

@@ -37,7 +37,7 @@
   <body class="hasBG">
     <div class="profile-page d-flex flex-column">
       <div class="profile-page-header bg-white">
-        <div class="container d-flex justify-content-between py-3">
+        <div class="container d-flex py-3">
           <button
             onclick="window.history.back()"
             style="width: 40px; height: 40px; background-color: var(--bg-body)"
@@ -58,7 +58,21 @@
               <path d="m15 18-6-6 6-6" />
             </svg>
           </button>
-          <a href="logout-logic.php" class="btn btn-danger btn-sm px-4 m-0 d-flex align-items-center">
+
+          <div class="ms-2 d-flex align-items-center">
+            <img
+              width="40"
+              height="40"
+              src="images/logo.png"
+              alt=""
+              class="ms-1"
+            />
+            <p class="mb-0 sidebar-label fw-bold fs-5">
+              Digi<span class="text-primary">Cart</span>
+            </p>
+          </div>
+
+          <a href="logout-logic.php" class="btn btn-danger ms-auto btn-sm px-4 m-0 d-flex align-items-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="16"
