@@ -1,10 +1,14 @@
+<?php
+  include "includes/includes.php";
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Dashboard</title>
-    <link rel="icon" href="../images/logo.png" type="image/x-icon" />
+    <link rel="icon" href="images/logo.png" type="image/x-icon" />
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -12,7 +16,7 @@
       crossorigin="anonymous"
     />
 
-    <link rel="stylesheet" href="../style.css" />
+    <link rel="stylesheet" href="style.css" />
 
     <!-- JQUERY CDN -->
     <script
@@ -31,7 +35,7 @@
           <img
             width="45"
             height="45"
-            src="../images/logo.png"
+            src="images/logo.png"
             alt=""
             class="ms-1"
           />
@@ -68,7 +72,7 @@
             </a>
           </li>
           <li class="">
-            <a href="" class="">
+            <a href="manage_orders.php" class="">
               <div
                 class="sidebar-icon d-flex align-items-center justify-content-center"
               >
@@ -123,7 +127,7 @@
             </a>
           </li>
           <li class="">
-            <a href="" class="">
+            <a href="manage_products.php" class="">
               <div
                 class="sidebar-icon d-flex align-items-center justify-content-center"
               >
@@ -175,9 +179,9 @@
         >
       </div>
 
-      <!-- main content  -->
+      <!-- dashboard header  -->
       <div
-        class="dashboard-header shadow-sm bg-white py-3 d-flex align-items-center justify-content-between ps-2 pe-4"
+        class="dashboard-header shadow-sm bg-white py-3 d-flex align-items-center ps-2 pe-5"
       >
         <button class="sidebar-toggle btn">
           <svg
@@ -196,19 +200,22 @@
             <path d="M12 3v18" />
           </svg>
         </button>
+        <h4 class="mb-0">Home</h4>
 
-        <div class="d-flex align-items-center">
+        <div class="d-flex align-items-center ms-auto">
           <img
             width="30"
             height="30"
-            src="../images/icons/boy.png"
+            src="images/icons/boy.png"
             alt=""
             class="rounded-circle"
           />
 
-          <p class="mb-0 ms-2 fw-semibold">Admin User</p>
+          <p class="mb-0 ms-2 fw-semibold"><?=$_SESSION['current_user']['firstname']?></p>
         </div>
       </div>
+
+
     </div>
     <!-- bootstrap cdn -->
     <script

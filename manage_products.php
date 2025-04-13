@@ -52,7 +52,7 @@
 
         <ul class="p-0 border-bottom">
           <li class="">
-            <a href="admin_dashboard.html" class="">
+            <a href="admin_dashboard.php" class="">
               <div
                 class="sidebar-icon d-flex align-items-center justify-content-center"
               >
@@ -185,9 +185,9 @@
         >
       </div>
 
-      <!-- main content  -->
+      <!-- dashboard header  -->
       <div
-        class="dashboard-header shadow-sm bg-white py-3 d-flex align-items-center justify-content-between ps-2 pe-4"
+        class="dashboard-header shadow-sm bg-white py-3 d-flex align-items-center justify-content-between ps-2 pe-5"
       >
         <div class="d-flex align-items-center">
           <button class="sidebar-toggle btn">
@@ -219,12 +219,12 @@
             class="rounded-circle"
           />
 
-          <p class="mb-0 ms-2 fw-semibold">Admin User</p>
+          <p class="mb-0 ms-2 fw-semibold"><?=$_SESSION['current_user']['firstname']?></p>
         </div>
       </div>
 
       <!-- main content  -->
-      <div class="bg-white p-4 shadow-sm rounded-2 m-2">
+      <div class="bg-white p-4 shadow-sm rounded-2 m-3 pe-4">
           <!-- feedback message for adding product  -->
           <?php 
               if(isset($_SESSION['add_product_error'])){
@@ -251,7 +251,7 @@
 
         <!-- product page header  -->
         <div class="d-flex align-items-center justify-content-between mt-1">
-          <h5 class="text-muted mb-0">Total Products: <?= $products->num_rows?></h5>
+          <h5 class="text-primary mb-0">Total Products: <?= $products->num_rows?></h5>
           <!-- Button trigger modal -->
           <button
             type="button"

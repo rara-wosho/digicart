@@ -28,7 +28,7 @@ class Cart
         $q= "SELECT p.*, c.* 
                 FROM cart c
                 JOIN products p ON c.product_id = p.product_id
-                WHERE c.user_id = $ownerID";
+                WHERE c.user_id = $ownerID ORDER BY added_at DESC";
 
         return $results = $conn->query($q);
     }

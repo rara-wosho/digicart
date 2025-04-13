@@ -107,7 +107,7 @@
                     // Redirect to dashboard for admins
                     if ($role == 'admin') {
                         $_SESSION['user_admin'] = true;
-                        header('location: admin/admin_dashboard.html');
+                        header('location: admin_dashboard.php');
                         exit();
                     }
                     

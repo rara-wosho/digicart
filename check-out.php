@@ -61,14 +61,14 @@
               <a
                 class="nav-link text-uppercase fw-semibold px-4 text-center"
                 aria-current="page"
-                href="index.html"
+                href="index.php"
                 >Home</a
               >
             </li>
             <li class="nav-item">
               <a
                 class="nav-link text-uppercase fw-semibold px-4 text-center"
-                href="products.html"
+                href="products.php"
                 >Products</a
               >
             </li>
@@ -89,7 +89,7 @@
             <li class="nav-item">
               <a
                 class="nav-link text-uppercase fw-semibold px-4 text-center btn"
-                href="cart.html"
+                href="cart.php"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -113,7 +113,13 @@
             </li>
           </ul>
           <div class="d-flex justify-content-center ms-3">
-            <a href="signin.html" class="btn btn-primary">Sign In</a>
+            <?php
+              if(isset($_SESSION['current_user'])){
+                echo('<a class="mb-0 d-flex align-items-center" href="profile.php"><img class="me-2" width="32"  height="32" src="images/icons/user.png" alt="">'.$_SESSION['current_user']['firstname'].'</a>');
+              }else{
+                echo('<a href="signin.php" class="btn btn-primary">Sign In</a>');
+              }
+            ?>
           </div>
         </div>
       </div>
@@ -144,9 +150,10 @@
                         </div>
                         <div class="modal-body d-flex flex-column align-items-center p-4">
                           <img src="images/purchase-success.png" width="180" height="180" alt="">
-                          <h6 class="text-muted mt-3">Here's your link to download the file.</h6>
-                          <p class="text-secondary text-center">You can see this link again in your profile -> order section</p>
-                          <a href="" class="text-primary text-center mb-2 fs-6">sdhasdhasdkhas</a>
+                          <h6 class="text-muted mt-3">Your can download the file now.</h6>
+                          <p class="text-secondary text-center">You can also see this in profile -> purchased products section</p>
+                          <a class="rounded-2 text-center mb-2 fs-6 py-2 px-3 bg-primary text-white" href="https://docs.google.com/document/d/19iHrJ83ieHpZeHmo-0sGg6dnGz6gcnMu/export?format=docx" download="digiproduct.docx">Download Product
+                        </a>
                         </div>
                         <div class="modal-footer py-3">
                           <a href="products.php" class="btn w-100 btn-primary">Close and Exit</a>
@@ -155,13 +162,15 @@
                     </div>
                   </div>
             <?php
-
                   unset($_SESSION['transaction_success']);
               }
             ?>
 
-          <div class="d-flex flex-column mb-2">
-            <h3>Check Out</h3>
+          <div class="d-flex align-items-center mb-2">
+            <div onclick="window.history.back()" class="bg-white border d-flex align-items-center rounded-circle me-3 p-1">
+              <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left-icon lucide-chevron-left"><path d="m15 18-6-6 6-6"/></svg>
+            </div>
+            <h3 class="mb-0">Check Out</h3>
           </div>
           <h5 class="mb-4 text-secondary">Product Details</h5>
           <div class="d-flex align-items-center border-top py-3 border-bottom">

@@ -88,14 +88,14 @@
               <a
                 class="nav-link text-uppercase fw-semibold px-4 text-center"
                 aria-current="page"
-                href="index.html"
+                href="index.php"
                 >Home</a
               >
             </li>
             <li class="nav-item">
               <a
                 class="nav-link text-uppercase fw-semibold px-4 text-center active"
-                href="products.html"
+                href="products.php"
                 >Products</a
               >
             </li>
@@ -140,7 +140,13 @@
             </li>
           </ul>
           <div class="d-flex justify-content-center ms-3">
-            <a href="signin.html" class="btn btn-primary">Sign In</a>
+          <?php
+              if(isset($_SESSION['current_user'])){
+                echo('<a href="profile.php"><img width="32"  height="32" src="images/icons/user.png" alt=""></a>');
+              }else{
+                echo('<a href="signin.php" class="btn btn-primary">Sign In</a>');
+              }
+            ?>
           </div>
         </div>
       </div>
@@ -200,7 +206,7 @@
                 </svg>
               </button>
 
-              <button class="btn btn-outline-secondary py-2 px-3 ms-2">
+              <a href="check-out.php?product_id=<?= $product['product_id']?>" class="btn btn-outline-secondary py-2 px-3 ms-2">
                 Buy Now
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -222,7 +228,7 @@
                   <circle cx="16" cy="9" r="2.9" />
                   <circle cx="6" cy="5" r="3" />
                 </svg>
-              </button>
+              </a>
             </form>
 
             <div class="d-flex align-items-center">

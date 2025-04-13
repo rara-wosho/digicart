@@ -38,7 +38,7 @@
                 $this->image_path = $image_destination;
                 
                 // For testing: this is a static Google Drive link instead of uploading the file
-                $this->file_path = "sample downloadable link";
+                $this->file_path = "https://docs.google.com/document/d/19iHrJ83ieHpZeHmo-0sGg6dnGz6gcnMu/export?format=docx";
                 
                 // Initialize sold count and ratings
                 $sold = 0;
@@ -255,12 +255,7 @@
             $stmt->execute();
             $result = $stmt->get_result();
             
-            $products = [];
-            while ($row = $result->fetch_assoc()) {
-                $products[] = $row;
-            }
-            
-            return $products;
+            return $result;
         }
         
         public function getAllCategories($conn) {

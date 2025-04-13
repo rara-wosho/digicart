@@ -63,14 +63,14 @@
               <a
                 class="nav-link text-uppercase fw-semibold px-4 text-center"
                 aria-current="page"
-                href="index.html"
+                href="index.php"
                 >Home</a
               >
             </li>
             <li class="nav-item">
               <a
                 class="nav-link text-uppercase fw-semibold px-4 text-center active"
-                href="products.html"
+                href="products.php"
                 >Products</a
               >
             </li>
@@ -91,7 +91,6 @@
             <li class="nav-item">
               <a
                 class="nav-link text-uppercase fw-semibold px-4 text-center btn"
-                href="cart.html"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -115,7 +114,13 @@
             </li>
           </ul>
           <div class="d-flex justify-content-center ms-3">
-            <a href="signin.html" class="btn btn-primary">Sign In</a>
+            <?php
+              if(isset($_SESSION['current_user'])){
+                echo('<a class="mb-0 d-flex align-items-center" href="profile.php"><img class="me-2" width="32"  height="32" src="images/icons/user.png" alt="">'.$_SESSION['current_user']['firstname'].'</a>');
+              }else{
+                echo('<a href="signin.php" class="btn btn-primary">Sign In</a>');
+              }
+            ?>
           </div>
         </div>
       </div>
@@ -139,6 +144,7 @@
             <tr class="border-0">
               <th class="py-3">Image</th>
               <th class="py-3 px-3">Product Name</th>
+              <th class="py-3 px-3">Category</th>
               <th class="py-3">Price</th>
               <th class="py-3">Check Out</th>
             </tr>
@@ -154,9 +160,12 @@
                   />
                 </td>
                 <td class="product-name px-3">
-                  <a href="check-out.html" class="text-black fw-semibold">
+                  <a href="product-details.php?id=<?= $row['product_id']?>" class="text-black fw-semibold">
                     <?= $row['name']?>
                   </a>
+                </td>
+                <td class="product-name px-3">
+                  <?= $row['category']?>
                 </td>
                 <td>₱<?= $row['price']?></td>
                 <td><a href="check-out.php?product_id=<?= $row['product_id']?>" class="btn btn-sm btn-success">Check Out</a></td>
@@ -183,10 +192,22 @@
                 </td>
               </tr>
             <?php endwhile ?>
+
+            <?php
+                if($items->num_rows == 0){
+            ?>
+              <!-- <div class="d-flex flex-column align-items-center justify-content-center p-5">
+                  <img src="images/icons/empty-pana.png" width="160" height="160" alt="">
+              </div> -->
+            <?php
+                }
+            ?>
           </tbody>
         </table>
       </div>
     </div>
+
+
     <!-- FOOTER  -->
     <footer
       class="py-4 d-flex align-items-center justify-content-center bg-white"

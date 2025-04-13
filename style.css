@@ -40,6 +40,10 @@ a {
   color: var(--text-accent);
 }
 
+.btn.bg-accent:hover {
+  background: var(--clr-accent) !important;
+}
+
 .bg-accent {
   background-color: var(--clr-accent);
 }

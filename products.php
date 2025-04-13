@@ -6,11 +6,33 @@
 
   // category parameter is optional 
   $products = $digiProduct->getAllProducts($connection);
-  
+  $category = "all";
+  $sortingField = "created_at";
+  $sortingMethod = "DESC";
+  $keyword = null;
+
   if($_SERVER['REQUEST_METHOD'] = "GET"){
+
+
     if(isset($_GET['category'])){
-      $products = $digiProduct->getAllProducts($connection, $_GET['category']);
+      $category = $_GET['category'];
     }
+
+    if(isset($_GET['sorting-field'])){
+      $sortingField = $_GET['sorting-field'];
+    }
+
+    if(isset($_GET['sorting-field'])){
+      $sortingMethod = $_GET['sorting-method'];
+    }
+  
+    if(isset($_GET['search-input'])){
+      $keyword = $_GET['search-input'];
+      $products = $digiProduct->searchProducts($connection, $keyword) ;
+    }else{
+      $products = $digiProduct->getAllProducts($connection, $category, $sortingField, $sortingMethod);
+    }
+    
   }
 
 ?>
@@ -63,7 +85,7 @@
               <a
                 class="nav-link text-uppercase fw-semibold px-4 text-center"
                 aria-current="page"
-                href="index.html"
+                href="index.php"
                 >Home</a
               >
             </li>
@@ -117,7 +139,7 @@
           <div class="d-flex justify-content-center ms-3">
             <?php
               if(isset($_SESSION['current_user'])){
-                echo('<a href="profile.php"><img width="32"  height="32" src="images/icons/user.png" alt=""></a>');
+                echo('<a class="mb-0 d-flex align-items-center" href="profile.php"><img class="me-2" width="32"  height="32" src="images/icons/user.png" alt="">'.$_SESSION['current_user']['firstname'].'</a>');
               }else{
                 echo('<a href="signin.php" class="btn btn-primary">Sign In</a>');
               }
@@ -133,7 +155,11 @@
       class="product-header p-5 d-flex flex-column align-items-center"
     >
       <h1 class="fw-semibold">Products</h1>
-      <p class="mb-0 text-center">Home / Product</p>
+      <!-- <p class="mb-0 text-center">Home / Product</p> -->
+      <form method="GET" class="input-group w-50">
+        <input value="<?=$keyword?>" type="text" name="search-input" class="form-control py-2" placeholder="Find your perfect digital product...">
+        <button class="input-group-text bg-primary text-white">Search</button>
+      </form>
     </div>
 
     <div
@@ -145,28 +171,66 @@
         method="GET"
         class="category-form mb-3 d-flex flex-column w-100 container px-4 pt-5 pb-3"
       >
-        <h3>Choose Category</h3>
+        <!-- <h3>Choose Filters</h3>  -->
+        <div style="gap:12px" class="d-flex align-items-center">
+          <div class="input-group w-25">
+            <div class="input-group-text">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chart-column-stacked-icon lucide-chart-column-stacked"><path d="M11 13H7"/><path d="M19 9h-4"/><path d="M3 3v16a2 2 0 0 0 2 2h16"/><rect x="15" y="5" width="4" height="12" rx="1"/><rect x="7" y="8" width="4" height="9" rx="1"/></svg>
+            </div>
+            <select name="category" class="form-select w-25 py-1">
+              <option value="all" <?= $category == "all" ? "selected": ""?>>All Categories</option>
+              <option value="Templates" <?= $category == "Templates" ? "selected": ""?>>Templates</option>
+              <option value="For Kids" <?= $category == "For Kids" ? "selected": ""?>>For Kids</option>
+              <option value="Courses" <?= $category == "Courses" ? "selected": ""?>>Courses</option>
+              <option value="Digital Art" <?= $category == "Digital Art" ? "selected": ""?>>Digital Art</option>
+              <option value="E-books" <?= $category == "E-books" ? "selected": ""?>>E-books</option>
+            </select>
+            </div>
+          <!-- <div class="categ-btns d-flex">
+            <button type="submit" name="category" value="all"  style="font-size:14px" class="border <?=$category == "all" ?"bg-secondary text-white ":"bg-body-tertiary"?> btn rounded-1 py-1 px-3 me-2">
+              All
+            </button>
+            <button type="submit" value="Templates" name="category" style="font-size:14px" class="border <?=$category == "Templates" ?"bg-secondary text-white":"bg-body-tertiary"?> rounded-1 py-1 px-3 me-2">
+              Templates
+            </button>
+            <button type="submit" value="E-books" name="category" style="font-size:14px" class="border <?=$category == "E-books" ?"bg-secondary text-white":"bg-body-tertiary"?> rounded-1 py-1 px-3 me-2">
+              E-books
+            </button>
+            <button type="submit" value="Digital Art" name="category" style="font-size:14px" class="border <?=$category == "Digital Art" ?"bg-secondary text-white":"bg-body-tertiary"?> rounded-1 py-1 px-3 me-2">
+              Digital Art
+            </button>
+            <button type="submit" value="For Kids" name="category" style="font-size:14px" class="border <?=$category == "For Kids" ?"bg-secondary text-white":"bg-body-tertiary"?> rounded-1 py-1 px-3 me-2">
+              For Kids
+            </button>
+            <button type="submit" value="Courses" name="category" style="font-size:14px" class="border <?=$category == "Courses" ?"bg-secondary text-white":"bg-body-tertiary"?> rounded-1 py-1 px-3 me-2">
+              Courses
+            </button>
+          </div> -->
+          <!-- sorting methods  -->
+       
+          <div class="input-group w-25">
+            <div class="input-group-text">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-square-library-icon lucide-square-library"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 7v10"/><path d="M11 7v10"/><path d="m15 7 2 10"/></svg>
+            </div>
+            <select name="sorting-field" class="form-select w-25 py-1">
+              <option value="price" <?= $sortingField == "price" ? "selected": ""?>>Price</option>
+              <option value="created_at" <?= $sortingField == "created_at" ? "selected": ""?>>Date</option>
+              <option value="sold" <?= $sortingField == "sold" ? "selected": ""?>>Sales</option>
+            </select>
+          </div>
+          <div class="input-group w-25">
+            <div class="input-group-text">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-down-icon lucide-arrow-up-down"><path d="m21 16-4 4-4-4"/><path d="M17 20V4"/><path d="m3 8 4-4 4 4"/><path d="M7 4v16"/></svg>
+            </div>
+            <select name="sorting-method" class="form-select w-25 py-1">
+              <option value="ASC" <?= $sortingMethod == "ASC" ? "selected": ""?>>Ascending</option>
+              <option value="DESC" <?= $sortingMethod == "DESC" ? "selected": ""?>>Descending</option>
+            </select>
+          </div>
 
-        <div class="categ-btns d-flex">
-          <button type="submit" name="category" value="all"  style="font-size:14px" class="border  btn-secondary btn rounded-1 py-1 px-3 me-2">
-            All
-          </button>
-          <button type="submit" value="Templates" name="category" style="font-size:14px" class="border  rounded-1 py-1 px-3 me-2 bg-body-tertiary">
-            Templates
-          </button>
-          <button type="submit" value="E-books" name="category" style="font-size:14px" class="border  rounded-1 py-1 px-3 me-2 bg-body-tertiary">
-            E-books
-          </button>
-          <button type="submit" value="Digital Art" name="category" style="font-size:14px" class="border  rounded-1 py-1 px-3 me-2 bg-body-tertiary">
-            Digital Art
-          </button>
-          <button type="submit" value="For Kids" name="category" style="font-size:14px" class="border  rounded-1 py-1 px-3 me-2 bg-body-tertiary">
-            For Kids
-          </button>
-          <button type="submit" value="Courses" name="category" style="font-size:14px" class="border  rounded-1 py-1 px-3 me-2 bg-body-tertiary">
-            Courses
-          </button>
+          <button class="btn btn-primary text-white px-4 btn-sm">Apply</button>
         </div>
+
       </form>
 
       <!-- PRODUCT ROWS  -->

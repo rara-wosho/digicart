@@ -1,3 +1,7 @@
+<?php
+  include "includes/includes.php";
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -18,7 +22,7 @@
     <!-- navbar  -->
     <nav class="navbar navbar-expand-lg shadow-sm bg-body-tertiary fixed-top">
       <div class="container">
-        <a class="navbar-brand d-flex align-items-center fw-bold" href="#"
+        <a href="index.php" class="navbar-brand d-flex align-items-center fw-bold" href="#"
           ><img
             src="images/logo.png"
             class="me-2"
@@ -46,14 +50,14 @@
               <a
                 class="nav-link text-uppercase fw-semibold px-4 text-center active"
                 aria-current="page"
-                href="#"
+                href=""
                 >Home</a
               >
             </li>
             <li class="nav-item">
               <a
                 class="nav-link text-uppercase fw-semibold px-4 text-center"
-                href="products.html"
+                href="products.php"
                 >Products</a
               >
             </li>
@@ -74,7 +78,7 @@
             <li class="nav-item">
               <a
                 class="nav-link text-uppercase fw-semibold px-4 text-center btn"
-                href="cart.html"
+                href="cart.php"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -98,7 +102,13 @@
             </li>
           </ul>
           <div class="d-flex justify-content-center ms-3">
-            <a href="signin.html" class="btn btn-primary">Sign In</a>
+            <?php
+              if(isset($_SESSION['current_user'])){
+                echo('<a class="mb-0 d-flex align-items-center" href="profile.php"><img class="me-2" width="32"  height="32" src="images/icons/user.png" alt="">'.$_SESSION['current_user']['firstname'].'</a>');
+              }else{
+                echo('<a href="signin.php" class="btn btn-primary">Sign In</a>');
+              }
+            ?>
           </div>
         </div>
       </div>
@@ -123,7 +133,7 @@
         <button class="btn btn-outline-secondary fw-semibold">
           Learn More
         </button>
-        <button class="btn bg-accent fw-semibold ms-2">Browse Products</button>
+        <a href="products.php" class="btn bg-accent fw-semibold ms-2">Browse Products</a>
       </div>
     </section>
 

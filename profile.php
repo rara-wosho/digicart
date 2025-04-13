@@ -5,6 +5,8 @@
   if(!isset($_SESSION['current_user'])){
     header("location: signin.php");
     exit();
+  }else{
+    $purchasedItems = $transaction->displayTransactionPerUser($connection, $_SESSION['current_user']['user_id']);
   }
 
 ?>
@@ -93,7 +95,7 @@
         <div class="row container mx-auto">
 
           <!-- TABS IN LEFT AREA  -->
-          <div class="col col-4 d-flex flex-column">
+          <div class="col col-3 d-flex flex-column">
             <!-- tabs -->
             <div
               class="nav flex-column nav-pills mb-3 border p-4 rounded-2"
@@ -123,7 +125,7 @@
                 aria-controls="orders-content"
                 aria-selected="false"
               >
-                Orders
+                Purchased Products
               </button>
               <button
                 class="nav-link text-start text-black"
@@ -139,7 +141,7 @@
               </button>
             </div>
           </div>
-          <div class="col col-8 border rounded-2 p-4">
+          <div class="col col-9 border rounded-2 p-4">
 
             <!-- updating profile feedback  -->
             <?php 
@@ -262,8 +264,33 @@
                 role="tabpanel"
                 aria-labelledby="orders-tab"
               >
-                <h4>Your Orders</h4>
-                <p>Your orders content goes here...</p>
+                <h4>Purchased Products</h4>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th class="text-secondary" scope="col">Name</th>
+                      <th class="text-secondary" scope="col">Price</th>
+                      <th class="text-secondary" scope="col">Amount</th>
+                      <th class="text-secondary" scope="col">Date</th>
+                      <th class="text-secondary" scope="col">Download</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php while($row = $purchasedItems->fetch_assoc()): ?>
+                      <tr>
+                        <td><?=$row['product_name']?></td>
+                        <td>₱<?=$row['price']?></td>
+                        <td>₱<?=$row['total']?></td>
+                        <td><?=$row['transaction_date']?></td>
+                        <td>
+                          <a class="bg-primary text-white rounded-1 py-1 px-3" href="https://docs.google.com/document/d/19iHrJ83ieHpZeHmo-0sGg6dnGz6gcnMu/export?format=docx" download="Your_Filename.docx">Download
+                          </a>
+                        </td>
+                      </tr>
+                    <?php endwhile ?>
+                  </tbody>
+                </table>
+
                 <!-- Add your orders content here -->
               </div>
               <div

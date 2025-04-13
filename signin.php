@@ -1,6 +1,18 @@
 <?php
 
-include "includes/includes.php";
+  include "includes/includes.php";
+
+  // redirect the user if already signded in 
+  if(isset($_SESSION['current_user'])){
+    // check is user is an admin 
+    if($_SESSION['current_user']['role'] == "admin"){
+      header("location: admin_dashboard.php");
+      exit();
+    }else{
+      header("location: index.php");
+      exit();
+    }
+  }
 ?>
 
 <!DOCTYPE html>

@@ -35,47 +35,25 @@ class Transactions{
         }
     }
 
-    public function displayAllTransactions($conn, $limit = 100){
-        $stmt = $conn->prepare("
-            SELECT t.*, u.username, u.email 
-            FROM transactions t
-            JOIN users u ON t.user_id = u.id
-            ORDER BY t.transaction_date DESC
-            LIMIT ?
-        ");
-        $stmt->bind_param("i", $limit);
-        $stmt->execute();
+    public function displayAllTransactions($conn){
+        $q = "SELECT * 
+            FROM transactions
+            ORDER BY transaction_date DESC";
         
-        $result = $stmt->get_result();
-        $transactions = [];
-        
-        while ($row = $result->fetch_assoc()) {
-            $row['items'] = $this->getTransactionItems($conn, $row['id']);
-            $transactions[] = $row;
-        }
-        
-        return $transactions;
+        return $result = $conn->query($q);
     }
 
     public function displayTransactionPerUser($conn, $userId){
-        $stmt = $conn->prepare("
-            SELECT t.* 
-            FROM transactions t
-            WHERE t.user_id = ?
-            ORDER BY t.transaction_date DESC
-        ");
-        $stmt->bind_param("i", $userId);
-        $stmt->execute();
+        $q = "
+            SELECT * 
+            FROM transactions
+            WHERE user_id = $userId
+            ORDER BY transaction_date DESC
+        ";
         
-        $result = $stmt->get_result();
-        $transactions = [];
+        $result = $conn->query($q);
         
-        while ($row = $result->fetch_assoc()) {
-            $row['items'] = $this->getTransactionItems($conn, $row['id']);
-            $transactions[] = $row;
-        }
-        
-        return $transactions;
+        return $result;
     }
 
     private function getTransactionItems($conn, $transactionId){
