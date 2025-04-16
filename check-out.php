@@ -4,6 +4,7 @@
 
   // check if  there is product id  and current user 
   if(isset($_GET['product_id']) && isset($_SESSION['current_user'])){
+    $quantity = $_GET['q'] ?? 1;
     $product = $digiProduct->getProductById($connection, $_GET['product_id']);
   }else{
     // if not sign in, redirect back to signin page 
@@ -82,8 +83,8 @@
             <li class="nav-item">
               <a
                 class="nav-link text-uppercase fw-semibold px-4 text-center"
-                href="#contact-us"
-                >Contact Us</a
+                href="orders.php"
+                >Orders</a
               >
             </li>
             <li class="nav-item">
@@ -139,44 +140,23 @@
 
                   unset($_SESSION['transaction_error']);
               }
-              if(isset($_SESSION['transaction_success'])){
-            ?>
-                  <!-- Show Modal if transaction is successful -->
-                  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="false">
-                    <div class="modal-dialog">
-                      <div class="modal-content border-0">
-                        <div class="modal-header bg-primary border-0">
-                          <h1 class="modal-title fs-5 text-white" id="staticBackdropLabel">Thank you for your purchase!</h1>
-                        </div>
-                        <div class="modal-body d-flex flex-column align-items-center p-4">
-                          <img src="images/purchase-success.png" width="180" height="180" alt="">
-                          <h6 class="text-muted mt-3">Your can download the file now.</h6>
-                          <p class="text-secondary text-center">You can also see this in profile -> purchased products section</p>
-                          <a class="rounded-2 text-center mb-2 fs-6 py-2 px-3 bg-primary text-white" href="https://docs.google.com/document/d/19iHrJ83ieHpZeHmo-0sGg6dnGz6gcnMu/export?format=docx" download="digiproduct.docx">Download Product
-                        </a>
-                        </div>
-                        <div class="modal-footer py-3">
-                          <a href="products.php" class="btn w-100 btn-primary">Close and Exit</a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-            <?php
-                  unset($_SESSION['transaction_success']);
-              }
             ?>
 
-          <div class="d-flex align-items-center mb-2">
+          <div class="d-flex align-items-center mb-4">
             <div onclick="window.history.back()" class="bg-white border d-flex align-items-center rounded-circle me-3 p-1">
               <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left-icon lucide-chevron-left"><path d="m15 18-6-6 6-6"/></svg>
             </div>
             <h3 class="mb-0">Check Out</h3>
           </div>
-          <h5 class="mb-4 text-secondary">Product Details</h5>
-          <div class="d-flex align-items-center border-top py-3 border-bottom">
+          <h5 class="mb-3 text-secondary">Product Details</h5>
+          <div class="d-flex align-items-center border-top py-3">
             <input type="hidden" name="transac-product-id" value="<?=$product['product_id']?>" >
             <input type="hidden" name="transac-user-id" value="<?=$_SESSION['current_user']["user_id"]?>" >
-            <input type="hidden" name="transac-total" value="<?=$product['price']?>" >
+            <input type="hidden" name="transac-price" value="<?=(int)$product['price']?>">
+            <input type="hidden" name="cart_quantity" value="<?=(int)$quantity?>">
+            <input type="hidden" name="" value="<?=(int)$product['price']?>">
+            <input type="hidden" name="transac-total" value="<?=($product['price'] * (int)$quantity) + 50?>" >
+
             <img
               src="<?=$product['image_path']?>"
               class="rounded-2"
@@ -187,23 +167,32 @@
             />
 
             <input type="text" class="appearance-none fw-semibold ms-2 text-muted" name="transac-product-name" readonly value="<?=$product['name']?>">
-            <input type="number" class="appearance-none fw-semibold ms-auto text-muted text-end" name="transac-price" readonly value="<?=(int)$product['price']?>">
+            <p class="ms-auto fw-semibold mb-0">₱<?=$product['price']?></p>
           </div>
 
-          <p class="text-muted py-3 border-bottom"><?=$product['description']?></p>
-
           <div style="background-color:rgba(92, 157, 248, 0.16);" class="p-3 rounded-1">
-            <h5 class="text-muted mb-2">Order Summary</h5>
-            <p class="text-secondary">A download link will appear once your payment is confirmed.</p>
+            <h5 class="text-muted mb-3">Order Summary</h5>
             <div
-              class="d-flex align-items-center justify-content-between mt-2 mb-2"
+              class="d-flex justify-content-between align-items-center mt-2 mb-2"
             >
-              <h6 class="">Subtotal</h6>
-              <h6 class="text-muted">₱<?=$product['price']?></h6>
+              <p class="text-muted mb-0">Quantity</p>
+              <h6 class="mb-0 text-muted ms-auto">x<?=$quantity?></h6>
             </div>
-            <div class="d-flex align-items-center justify-content-between">
+            <div
+              class="d-flex justify-content-between align-items-center mt-2 mb-2"
+            >
+              <p class="text-muted mb-0">Subtotal</p>
+              <h6 class="mb-0 text-muted ms-auto">₱<?=$quantity * $product['price']?></h6>
+            </div>
+            <div
+              class="d-flex justify-content-between align-items-center mt-2 mb-3"
+            >
+              <p class="text-muted mb-0">Shipping fee</p>
+              <h6 class="mb-0 text-muted ms-auto">₱50</h6>
+            </div>
+            <div class="d-flex align-items-center justify-content-between mt-1">
               <h6 class="fw-bold fs-4 text-primary">Total</h6>
-              <h4 class="text-primary fw-bold">₱<?=$product['price']?></h4>
+              <h4 class="text-primary fw-bold">₱<?=($product['price'] *  $quantity) + 50?></h4>
             </div>
           </div>
         </div>
@@ -339,7 +328,7 @@
           <button
             class="bg-accent fw-semibold w-100 text-center border-0 py-2 mt-3 rounded-2"
           >
-            Confirm Payment
+            Confirm Order
           </button>
         </div>
       </form>

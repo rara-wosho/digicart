@@ -153,6 +153,19 @@
                     />
                 </div>
                 <div class="mb-3">
+                    <label for="productPrice" class="form-label">Stock</label>
+                    <input
+                    value="<?=$productData['stock'] ?? ""?>"
+                    name="stock"
+                    type="number"
+                    class="form-control"
+                    id="stock"
+                    step="0.01"
+                    min="0"
+                    required
+                    />
+                </div>
+                <div class="mb-3">
                     <label for="productCategory" class="form-label"
                     >Category</label
                     >

@@ -84,8 +84,8 @@
             <li class="nav-item">
               <a
                 class="nav-link text-uppercase fw-semibold px-4 text-center"
-                href="#contact-us"
-                >Contact Us</a
+                href="orders.php"
+                >Orders</a
               >
             </li>
             <li class="nav-item">
@@ -146,6 +146,7 @@
               <th class="py-3 px-3">Product Name</th>
               <th class="py-3 px-3">Category</th>
               <th class="py-3">Price</th>
+              <th class="py-3">Quantity</th>
               <th class="py-3">Check Out</th>
             </tr>
           </thead>
@@ -168,7 +169,14 @@
                   <?= $row['category']?>
                 </td>
                 <td>₱<?= $row['price']?></td>
-                <td><a href="check-out.php?product_id=<?= $row['product_id']?>" class="btn btn-sm btn-success">Check Out</a></td>
+                <td><?= $row['cart_quantity']?></td>
+                <td>
+                  <?php if($row['stock'] > 0){?>
+                    <a href="check-out.php?product_id=<?= $row['product_id']?>&q=<?=$row['cart_quantity']?>" class="btn btn-sm btn-success">Check Out</a>
+                  <?php }else{
+                    echo "Out Of Stock";
+                  } ?>
+                </td>
                 <td>
                   <a href="delete-from-cart-logic.php?product_id=<?= htmlspecialchars($row['product_id']) ?>&user_id=<?= htmlspecialchars($row['user_id']) ?>" 
                     class="btn d-inline-flex btn-outline-danger text-danger ms-auto remove-btn rounded-circle align-items-center"

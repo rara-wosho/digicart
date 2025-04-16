@@ -14,12 +14,12 @@
 
     // add the item to cart if add button is clicked 
     if(isset($_POST['add-to-cart-btn'])){
-      
       // if user is  signed in, add the item to cart
       if(isset($_SESSION['current_user'])){
         // the current user's id 
         $ownerID  = $_SESSION['current_user']['user_id'];
-        $cart->addToCart($connection, $ownerID, $productId);
+        $quantity = $_POST['quantity'];
+        $cart->addToCart($connection, $ownerID, $productId, $quantity);
       }else{
         header("location: signin.php");
         exit();
@@ -109,8 +109,8 @@
             <li class="nav-item">
               <a
                 class="nav-link text-uppercase fw-semibold px-4 text-center"
-                href="#contact-us"
-                >Contact Us</a
+                href="orders.php"
+                >Orders</a
               >
             </li>
             <li class="nav-item">
@@ -173,63 +173,81 @@
 
             <div class="d-flex mb-2 align-items-center">
               <p class="mb-0 text-secondary">Sold : <?= $product['sold']?></p>
-              <p class="mb-0  ms-4 text-secondary">Ratings : <?= $product['ratings']?></p>
+              <p class="mb-0  ms-4 text-secondary">Stocks : <?= $product['stock']?></p>
             </div>
 
-            <!-- btns  -->
-            <form method="POST" class="d-flex align-items-center mb-3">
-              <button
-                type="submit"
-                name="add-to-cart-btn"
-                class="btn border py-2 px-3 bg-black text-white fw-semibold"
-                <?= $inCart ? 'disabled' : '' ?>
-              >
+            <?php
+              if($product['stock'] > 0){
+            ?>
+              <!-- form  -->
+              <form method="POST" class="my-3">
+                <div class="d-flex align-items-center mb-3">
+                  <button id="minus-btn" type="button" class="btn btn-outline-secondary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-minus-icon lucide-minus"><path d="M5 12h14"/></svg>
+                  </button>
+                    <input readonly type="number" name="quantity" id="quantity-value" class="appearance-none text-center mx-1 fs-5 text-muted fw-semibold" style="width:50px;"  value="1">
+                  <button id="plus-btn" type="button" class="btn btn-success">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus-icon lucide-plus"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+                  </button>
+                </div>
 
-                <?= $inCart ? "Added to Cart" : "Add to Cart" ?>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  class="lucide lucide-shopping-cart-icon lucide-shopping-cart ms-2"
+                <button
+                  type="submit"
+                  name="add-to-cart-btn"
+                  class="btn border py-2 px-3 bg-black text-white fw-semibold"
+                  <?= $inCart ? 'disabled' : '' ?>
                 >
-                  <circle cx="8" cy="21" r="1" />
-                  <circle cx="19" cy="21" r="1" />
-                  <path
-                    d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"
-                  />
-                </svg>
-              </button>
 
-              <a href="check-out.php?product_id=<?= $product['product_id']?>" class="btn btn-outline-secondary py-2 px-3 ms-2">
-                Buy Now
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  class="lucide lucide-hand-coins-icon lucide-hand-coins ms-2"
-                >
-                  <path d="M11 15h2a2 2 0 1 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 17" />
-                  <path
-                    d="m7 21 1.6-1.4c.3-.4.8-.6 1.4-.6h4c1.1 0 2.1-.4 2.8-1.2l4.6-4.4a2 2 0 0 0-2.75-2.91l-4.2 3.9"
-                  />
-                  <path d="m2 16 6 6" />
-                  <circle cx="16" cy="9" r="2.9" />
-                  <circle cx="6" cy="5" r="3" />
-                </svg>
-              </a>
-            </form>
+                  <?= $inCart ? "Added to Cart" : "Add to Cart" ?>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-shopping-cart-icon lucide-shopping-cart ms-2"
+                  >
+                    <circle cx="8" cy="21" r="1" />
+                    <circle cx="19" cy="21" r="1" />
+                    <path
+                      d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"
+                    />
+                  </svg>
+                </button>
+
+                <a href="check-out.php?product_id=<?= $product['product_id']?>" class="btn btn-outline-secondary py-2 px-3 ms-2">
+                  Buy Now
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-hand-coins-icon lucide-hand-coins ms-2"
+                  >
+                    <path d="M11 15h2a2 2 0 1 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 17" />
+                    <path
+                      d="m7 21 1.6-1.4c.3-.4.8-.6 1.4-.6h4c1.1 0 2.1-.4 2.8-1.2l4.6-4.4a2 2 0 0 0-2.75-2.91l-4.2 3.9"
+                    />
+                    <path d="m2 16 6 6" />
+                    <circle cx="16" cy="9" r="2.9" />
+                    <circle cx="6" cy="5" r="3" />
+                  </svg>
+                </a>
+              </form>
+            <?php
+              }else{
+                echo '<p class="mb-3 alert alert-danger">Out of Stock</p>';
+              }
+            ?>
 
             <div class="d-flex align-items-center">
               <h6 class="mb-0 me-2">Category </h6>
@@ -466,15 +484,24 @@
     ></script>
 
     <script>
-      const queryString = window.location.search;
+      const quantityInput = document.getElementById("quantity-value");
+      let quantity = parseInt(quantityInput.value);
 
-      // Create a URLSearchParams object with the query string
-      const urlParams = new URLSearchParams(queryString);
+      const stock = <?=$product['stock']?>;
 
-      // Get the value of the 'id' parameter
-      const productId = urlParams.get("id");
-
-      console.log("Product ID : ", productId);
+      document.getElementById("minus-btn").addEventListener('click', function(){
+        if(quantity > 1){
+          quantity -= 1;
+          quantityInput.value = quantity;
+        }
+      })
+      
+      document.getElementById("plus-btn").addEventListener('click', function(){
+        if(quantity < stock){
+          quantity += 1;
+          quantityInput.value = quantity;
+        }
+      })
     </script>
   </body>
 </html>

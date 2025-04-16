@@ -3,6 +3,7 @@
         private $name;
         private $description;
         private $price;
+        private $stock;
         private $category;
         private $image_path;
         private $file_path;
@@ -15,6 +16,7 @@
             $this->name = filter_var($productData['name'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $this->description = filter_var($productData['description'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $this->price = filter_var($productData['price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+            $this->stock = $productData['stock'];
             $this->category = filter_var($productData['category'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             
             // Handle image upload
@@ -46,15 +48,16 @@
                 
                 // Prepare insert statement with new fields
                 $insert_query = "INSERT INTO products 
-                                (name, description, price, category, image_path, file_path, sold, ratings, created_at) 
-                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())";
+                                (name, description, price, category, stock, image_path, file_path, sold, ratings, created_at) 
+                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
                 
                 $stmt = $conn->prepare($insert_query);
-                $stmt->bind_param("ssdsssii", 
+                $stmt->bind_param("ssdsissii", 
                     $this->name, 
                     $this->description, 
                     $this->price, 
                     $this->category, 
+                    $this->stock, 
                     $this->image_path, 
                     $this->file_path,
                     $sold,
@@ -135,6 +138,7 @@
             $name = filter_var($productData['name'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $description = filter_var($productData['description'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $price = filter_var($productData['price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+            $stock = $productData['stock'];
             $category = filter_var($productData['category'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $productId = (int)$productId;
         
@@ -171,9 +175,9 @@
         
             try {
                 // Build the update query dynamically based on provided data
-                $query = "UPDATE products SET name = ?, description = ?, price = ?, category = ?";
-                $params = [$name, $description, $price, $category];
-                $types = "ssds"; // string, string, double, string
+                $query = "UPDATE products SET name = ?, description = ?, price = ?, category = ?, stock = ?";
+                $params = [$name, $description, $price, $category, $stock];
+                $types = "ssdsi";
         
                 // Add image to update if new image was uploaded
                 if ($update_image) {

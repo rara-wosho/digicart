@@ -75,8 +75,8 @@
             <li class="nav-item">
               <a
                 class="nav-link text-uppercase fw-semibold px-4 text-center"
-                href="#"
-                >Contact Us</a
+                href="orders.php"
+                >Orders</a
               >
             </li>
             <li class="nav-item">

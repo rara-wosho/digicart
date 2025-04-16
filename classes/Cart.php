@@ -3,10 +3,10 @@
 class Cart
 {
 
-    public function addToCart($conn, $ownerID, $productID){
-        
+    public function addToCart($conn, $ownerID, $productID, $quantity){
+
         if(!$this->isInCart($conn, $ownerID, $productID)){
-            $q = "INSERT INTO `cart`(`product_id`, `user_id`) VALUES ('$productID','$ownerID')";
+            $q = "INSERT INTO `cart`(`product_id`, `user_id`, `cart_quantity`) VALUES ('$productID','$ownerID', '$quantity')";
             return $results = $conn->query($q);
         }
     }

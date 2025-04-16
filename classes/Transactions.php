@@ -10,21 +10,25 @@
             $productName = htmlspecialchars($postData['transac-product-name']);
             $price = (int)$postData['transac-price'];
             $totalAmount = (int)$postData['transac-total'];
+            $quantitySold = (int)$postData['cart_quantity'];
+            $totalAmount = (int)$postData['transac-total'];
             $fullName = htmlspecialchars($postData['fullname']);
             $address = htmlspecialchars($postData['address']);
             $email = filter_var($postData['email'], FILTER_SANITIZE_EMAIL);
             $paymentMethod = htmlspecialchars($postData['payment-option']);
         
             $query = "INSERT INTO 
-            transactions( `user_id`, `product_id`, `product_name`, `price`, `total`, `fullname`, `fulladdress`, `email`, `payment_option`) 
-            VALUES ('$userId','$productId','$productName','$price','$totalAmount','$fullName','$address','$email','$paymentMethod')";
+            transactions( `user_id`, `product_id`, `product_name`, `price`, `total`, `quantity`, `status`, `fullname`, `fulladdress`, `email`, `payment_option`) 
+            VALUES ('$userId','$productId','$productName','$price','$totalAmount', '$quantitySold', 'pending', '$fullName','$address','$email','$paymentMethod')";
         
             $result = $conn->query($query);
 
             if($result){
 
-                // Update product stock
-                $this->updateProductSales($conn, $productId, 1);
+                // Update product sales
+                $this->updateProductSales($conn, $productId, $quantitySold);
+
+                $this->updateStock($conn, $productId, $quantitySold);
 
                 // remove the item from cart 
                 $this->removeFromCart($conn, $userId, $productId);
@@ -35,7 +39,22 @@
             }
         }
 
-        public function displayAllTransactions($conn){
+        public function displayOrders($conn){
+            $q = "SELECT * 
+                FROM transactions
+                WHERE status = 'pending' OR status = 'shipped' OR status = 'out_for_delivery'
+                ORDER BY transaction_date DESC";
+            
+            return $result = $conn->query($q);
+        }
+
+        public function displayOrdersPerUser($conn, $userId){
+            $q = "SELECT * FROM transactions WHERE user_id='$userId' ORDER BY transaction_date DESC";
+
+            return $result = $conn->query($q);
+        }
+
+        public function displayAllTransactions($conn, $status = 'all'){
             $q = "SELECT * 
                 FROM transactions
                 ORDER BY transaction_date DESC";
@@ -94,6 +113,22 @@
                 UPDATE products 
                 SET sold = sold + ? 
                 WHERE product_id = ?");
+            $stmt->bind_param("ii", $quantitySold, $productId);
+            return $stmt->execute();
+        }
+
+        public function updateOrderStatus($conn, $status, $orderId){
+            $q = "UPDATE transactions SET status='$status' WHERE transaction_id = $orderId";
+
+            return $result = $conn->query($q);
+        }
+
+        public function updateStock($conn, $productId, $quantitySold){
+            $stmt = $conn->prepare("
+            UPDATE products 
+            SET stock = stock - ? 
+            WHERE product_id = ?");
+
             $stmt->bind_param("ii", $quantitySold, $productId);
             return $stmt->execute();
         }

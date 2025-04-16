@@ -89,8 +89,8 @@
               <p class="sidebar-label mb-0 px-2">Home</p>
             </a>
           </li>
-          <li class="active">
-            <a class="">
+          <li class="">
+            <a href="manage_orders.php" class="">
               <div
                 class="sidebar-icon d-flex align-items-center justify-content-center"
               >
@@ -116,6 +116,16 @@
                   <path d="m5 11 4-7" />
                   <path d="m9 11 1 9" />
                 </svg>
+              </div>
+              <p class="sidebar-label mb-0 px-2">Orders</p>
+            </a>
+          </li>
+          <li class="active">
+            <a class="">
+              <div
+                class="sidebar-icon d-flex align-items-center justify-content-center"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left-right-icon lucide-arrow-left-right"><path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/></svg>
               </div>
               <p class="sidebar-label mb-0 px-2">Transactions</p>
             </a>
@@ -250,11 +260,11 @@
               <th scope="col">Name</th>
               <th scope="col">Product</th>
               <th scope="col">Price</th>
+              <th scope="col">Quantity</th>
               <th scope="col">Amount</th>
-              <th scope="col">Address</th>
-              <th scope="col">Email</th>
               <th scope="col">Payment</th>
               <th scope="col">Date</th>
+              <th scope="col">Status</th>
             </tr>
           </thead>
           <tbody>
@@ -267,11 +277,17 @@
                     <td><?=$row['fullname']?></td>
                     <td><?=$row['product_name']?></td>
                     <td><?=$row['price']?></td>
+                    <td><?=$row['quantity']?></td>
                     <td><?=$row['price']?></td>
-                    <td><?=$row['fulladdress']?></td>
-                    <td><?=$row['email']?></td>
                     <td><?=$row['payment_option']?></td>
                     <td><?=$row['transaction_date']?></td>
+                    <td>
+                      <?= $row['status'] == "out_for_delivery" ? "<div class='badge text-bg-success text-nowrap'>Out for Delivery</div>" : ""?>
+                      <?= $row['status'] == "cancelled" ? "<div class='badge text-bg-danger text-nowrap'>Cancelled</div>" : ""?>
+                      <?= $row['status'] == "shipped" ? "<div class='badge text-bg-warning text-nowrap'>Shipped</div>" : ""?>
+                      <?= $row['status'] == "pending" ? "<div class='badge text-bg-warning text-nowrap'>Pending</div>" : ""?>
+                      <?= $row['status'] == "received" ? "<div class='badge text-bg-primary text-nowrap'>Received</div>" : ""?>
+                    </td>
                   </tr>
               <?php
                   }

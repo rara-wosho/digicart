@@ -83,7 +83,7 @@
             </a>
           </li>
           <li class="">
-            <a href="manage_transactions.php" class="">
+            <a href="manage_orders.php" class="">
               <div
                 class="sidebar-icon d-flex align-items-center justify-content-center"
               >
@@ -109,6 +109,16 @@
                   <path d="m5 11 4-7" />
                   <path d="m9 11 1 9" />
                 </svg>
+              </div>
+              <p class="sidebar-label mb-0 px-2">Orders</p>
+            </a>
+          </li>
+          <li class="">
+            <a href="manage_transactions.php" class="">
+              <div
+                class="sidebar-icon d-flex align-items-center justify-content-center"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left-right-icon lucide-arrow-left-right"><path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/></svg>
               </div>
               <p class="sidebar-label mb-0 px-2">Transactions</p>
             </a>

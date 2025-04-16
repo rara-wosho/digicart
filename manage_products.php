@@ -110,7 +110,7 @@
             </a>
           </li>
           <li class="">
-            <a href="manage_transactions.php" class="">
+            <a href="manage_orders.php" class="">
               <div
                 class="sidebar-icon d-flex align-items-center justify-content-center"
               >
@@ -136,6 +136,16 @@
                   <path d="m5 11 4-7" />
                   <path d="m9 11 1 9" />
                 </svg>
+              </div>
+              <p class="sidebar-label mb-0 px-2">Orders</p>
+            </a>
+          </li>
+          <li class="">
+            <a href="manage_transactions.php" class="">
+              <div
+                class="sidebar-icon d-flex align-items-center justify-content-center"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left-right-icon lucide-arrow-left-right"><path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/></svg>
               </div>
               <p class="sidebar-label mb-0 px-2">Transactions</p>
             </a>
@@ -389,6 +399,7 @@
               <th style="background:rgb(240,245,255);" scope="col">Name</th>
               <th style="background:rgb(240,245,255);" scope="col">Description</th>
               <th style="background:rgb(240,245,255);" scope="col">Price</th>
+              <th style="background:rgb(240,245,255);" scope="col">Stock</th>
               <th style="background:rgb(240,245,255);" scope="col">Category</th>
               <th style="background:rgb(240,245,255);" scope="col">Sold</th>
               <th style="background:rgb(240,245,255);" scope="col">Ratings</th>
@@ -410,6 +421,7 @@
                 <td style="max-width:300px;"><?= $row['name'] ?></td>
                 <td style="max-width:300px;"><?= $row['description'] ?></td>
                 <td class="px-4">₱<?= $row['price'] ?></td>
+                <td class="px-4"><?= $row['stock'] ?></td>
                 <td><?= $row['category'] ?></td>
                 <td><?= $row['sold'] ?></td>
                 <td><?= $row['ratings'] ?></td>
@@ -492,6 +504,18 @@
                     type="number"
                     class="form-control"
                     id="productPrice"
+                    step="0.01"
+                    min="0"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="productPrice" class="form-label">Stock</label>
+                  <input
+                    name="stock"
+                    type="number"
+                    class="form-control"
+                    id="stock"
                     step="0.01"
                     min="0"
                     required
