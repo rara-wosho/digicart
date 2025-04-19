@@ -8,7 +8,7 @@
   --bg-primary: linear-gradient(
     to bottom,
     rgb(40, 166, 244) 0%,
-    rgb(116, 88, 255) 100%
+    rgb(33, 0, 198) 100%
   );
 
   --bg-body: rgb(240, 249, 255);
@@ -19,7 +19,7 @@
 }
 
 .text-primary {
-  color: rgb(116, 88, 255) !important ;
+  color: rgb(31, 0, 188) !important ;
 }
 .bg-primary {
   background: var(--bg-primary) !important;
@@ -77,7 +77,7 @@ body.hasBG {
 }
 
 .hero-main-text {
-  font-size: 4.4rem;
+  font-size: 4rem;
   text-shadow: 0 0 10px rgba(251, 253, 255, 1);
 }
 
@@ -125,10 +125,6 @@ footer {
 }
 
 /* CATEGORY SECTOINN  */
-.category-section {
-  padding-top: 5rem;
-}
-
 .category-card {
   width: 13rem;
 }

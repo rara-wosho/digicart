@@ -282,6 +282,7 @@
 
             return $result = $conn->query($q);
         }
+        
         public function newProducts($conn,  $limit = 5){
             $q = "SELECT * FROM products ORDER BY created_at DESC LIMIT $limit";
 

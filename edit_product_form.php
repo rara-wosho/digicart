@@ -176,12 +176,12 @@
                     id="productCategory"
                     required
                     >
-                    <option value="" disabled selected>Select category</option>
-                    <option value="E-books" <?=$productData['category'] == "E-books" ? "selected": ""?>>E-books</option>
-                    <option value="Templates" <?=$productData['category'] == "Templates" ? "selected": ""?>>Templates</option>
-                    <option value="For Kids" <?=$productData['category'] == "For Kids" ? "selected": ""?>>For Kids</option>
-                    <option value="Courses" <?=$productData['category'] == "Courses" ? "selected": ""?>>Courses</option>
-                    <option value="Digital Art" <?=$productData['category'] == "Digital Art" ? "selected": ""?>>Digital Art</option>
+                        <option value="" disabled selected>Select category</option>
+                        <option value="smartphone" <?=$productData['category'] == "smartphone" ? "selected": ""?>>Smartphone</option>
+                        <option value="tablet" <?=$productData['category'] == "tablet" ? "selected": ""?>>Tablet</option>
+                        <option value="laptop" <?=$productData['category'] == "laptop" ? "selected": ""?>>Laptop</option>
+                        <option value="smart watch" <?=$productData['category'] == "smart watch" ? "selected": ""?>>Smart Watch</option>
+                        <option value="speaker" <?=$productData['category'] == "speaker" ? "selected": ""?>>Speaker</option>
                     </select>
                 </div>
                 <div>

@@ -525,6 +525,7 @@
                   <label for="productCategory" class="form-label"
                     >Category</label
                   >
+
                   <select
                     name="category"
                     class="form-select"
@@ -532,11 +533,11 @@
                     required
                   >
                     <option value="" disabled selected>Select category</option>
-                    <option value="E-books">E-books</option>
-                    <option value="Templates">Templates</option>
-                    <option value="For Kids">For Kids</option>
-                    <option value="Courses">Courses</option>
-                    <option value="Digital Art">Digital Art</option>
+                    <option value="smartphone">Smartphone</option>
+                    <option value="tablet">Tablet</option>
+                    <option value="laptop">Laptop</option>
+                    <option value="smart watch">Smart Watch</option>
+                    <option value="speaker">Speaker</option>
                   </select>
                 </div>
                 <div class="mb-3">

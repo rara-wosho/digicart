@@ -38,26 +38,33 @@
         <div class="profile-page d-flex flex-column">
             <div class="profile-page-header bg-white">
                 <div class="container d-flex py-3">
-                <button
-                    onclick="window.history.back()"
-                    style="width: 40px; height: 40px; background-color: var(--bg-body)"
-                    class="btn rounded-circle border d-flex align-items-center justify-content-center p-0"
-                >
-                    <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="22"
-                    height="22"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="lucide lucide-chevron-left-icon lucide-chevron-left"
+                    <button
+                        onclick="window.location.href='index.php'"
+                        style="width: 40px; height: 40px; background-color: var(--bg-body)"
+                        class="btn rounded-circle border d-flex align-items-center justify-content-center p-0 me-2"
                     >
-                    <path d="m15 18-6-6 6-6" />
-                    </svg>
-                </button>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-house-icon lucide-house"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+                    </button>
+                    <button
+                        onclick="window.history.back()"
+                        style="width: 40px; height: 40px; background-color: var(--bg-body)"
+                        class="btn rounded-circle border d-flex align-items-center justify-content-center p-0"
+                    >
+                        <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="22"
+                        height="22"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="lucide lucide-chevron-left-icon lucide-chevron-left"
+                        >
+                        <path d="m15 18-6-6 6-6" />
+                        </svg>
+                    </button>
 
                 <div class="ms-2 d-flex align-items-center">
                     <img
@@ -155,20 +162,45 @@
             </div>
         </div>
 
-        <!-- FOOTER  -->
-        <footer
-        class="py-4 d-flex align-items-center justify-content-center bg-white"
-        >
-        <div class="container d-flex align-items-center justify-content-between">
-            <h3 class="fw-bold text-muted d-flex align-items-center">
-            <img src="images/logo.png" width="50" height="50" alt="" />Digi<span
-                class="text-primary"
-                >Cart</span
+            <!-- FOOTER  -->
+            <footer
+            class="d-flex bg-body-tertiary"
             >
-            </h3>
-            <p class="mb-0 text-secondary fw-bold">Mherafe Cabug@2025</p>
-        </div>
-        </footer>
+                <div class="container d-flex align-items-center justify-content-between py-5">
+                    <div>
+                    <h3 class="fw-bold mb-0 text-muted d-flex align-items-center">
+                        <img src="images/logo.png" width="40" height="40" alt="" />Digi<span
+                        class="text-primary"
+                        >Cart</span
+                        >
+                    </h3>
+                    </div>
+
+                    <div class="d-flex flex-column align-items-center">
+                    <h5 class="border-bottom pb-3 text-muted fw-bold">Get In Touch With Us</h5>
+                    <div style="gap:8px" class="d-flex align-items-center py-2">
+                        <div class="border p-2 bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-facebook-icon lucide-facebook"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                        </div>
+
+                        <div class="border p-2 bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail-icon lucide-mail"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                        </div>
+
+                        <div class="border p-2 bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-phone-icon lucide-phone"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                        </div>
+                        <div class="border p-2 bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin-icon lucide-map-pin"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>
+                        </div>
+                    </div>
+                    </div>
+
+                    <div class="">
+                    <p class="mb-0 fw-semibold text-secondary">All rights reserved</p>
+                    </div>
+                </div>
+            </footer>
     </body>
 
     <!-- bootstrap cdn -->

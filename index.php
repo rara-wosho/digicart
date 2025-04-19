@@ -122,75 +122,84 @@
     <section
       class="hero-section container d-flex flex-column align-items-start justify-content-center p-3 p-md-4"
     >
-      <h3>Instant Digital Downloads, Zero Wait</h3>
-
-      <h1 class="hero-main-text text-muted fw-bold mt-1">Get premium</h1>
-
-      <h1 class="text-primary fw-bold mb-3 text-uppercase hero-main-text">
-        Digital Products
-      </h1>
-      <p class="subtitle">
-        Delivered automatically after payment. No shipping, no hassle.
+      <h1>Looking for a brand new smart phone?</h1>
+      <h1 class="fw-bold text-uppercase hero-main-text text-primary w-75">Come… take a handpick and own</h1>
+      <p class="subtitle fs-5 mb-0">
+      Shop at iProTech Gadget Center 
+      Facade of Aloran Business Center.
       </p>
 
-      <div class="d-flex align-items-center mt-3">
-        <button class="btn btn-outline-secondary fw-semibold">
+      <div class="d-flex align-items-center mt-3 mb-3">
+        <a href="products.php" class="btn bg-accent btn-sm py-2 px-4 shadow-sm fw-semibold me-2">Browse Products</a>
+
+        <button class="btn btn-outline-secondary btn-sm py-2 px-4 fw-semibold">
           Learn More
         </button>
-        <a href="products.php" class="btn bg-accent fw-semibold ms-2">Browse Products</a>
       </div>
     </section>
 
     <!-- category-sectionn  -->
     <section
-      class="category-section bg-body-tertiary d-flex flex-column justify-content-center align-items-center"
+      class="category-section bg-body-tertiary d-flex justify-content-center align-items-center"
     >
-      <h3 class="mb-3">Categories</h3>
-      <p class="text-muted mb-4">
-        Which type of digital product are you looking for?
-      </p>
-      <div class="category-wrapper d-flex align-items-center">
-        <div
-          class="py-4 px-4 rounded-2 mx-2 category-card border d-flex justify-content-center flex-column align-items-center"
-        >
-          <img width="50" height="50" src="images/icons/windows.png" alt="" />
-          <h4 class="mb-0 mt-2">Templates</h4>
+      <div style="transform:translateY(-2rem)" class="d-flex align-items-center-justify-content-center rounded-2 overflow-hidden shadow-sm">
+        <div class="bg-primary p-4">
+          <div class="d-flex align-items-center pe-5 border-end">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-smartphone-icon lucide-smartphone"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
+            <p class="mb-0 ms-1 text-white">Smartphones</p>
+          </div>
         </div>
-        <div
-          class="py-4 px-4 rounded-2 mx-2 category-card border d-flex justify-content-center flex-column align-items-center"
-        >
-          <img
-            width="50"
-            height="50"
-            src="images/icons/digital-library.png"
-            alt=""
-          />
-          <h4 class="mb-0 mt-2">E-books</h4>
+        <div class="bg-primary p-4">
+          <div class="d-flex align-items-center pe-5 border-end">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-tablet-smartphone-icon lucide-tablet-smartphone"><rect width="10" height="14" x="3" y="8" rx="2"/><path d="M5 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2h-2.4"/><path d="M8 18h.01"/></svg>
+            <p class="mb-0 ms-1 text-white">Tablets</p>
+          </div>
         </div>
-        <div
-          class="py-4 px-4 rounded-2 mx-2 category-card border d-flex justify-content-center flex-column align-items-center"
-        >
-          <img width="50" height="50" src="images/icons/computer.png" alt="" />
-          <h4 class="mb-0 mt-2">Digital Art</h4>
+        <div class="bg-primary p-4">
+          <div class="d-flex align-items-center pe-5 border-end">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-laptop-minimal-icon lucide-laptop-minimal"><rect width="18" height="12" x="3" y="4" rx="2" ry="2"/><line x1="2" x2="22" y1="20" y2="20"/></svg>
+            <p class="mb-0 ms-1 text-white">PC and Laptops</p>
+          </div>
         </div>
-        <div
-          class="py-4 px-4 rounded-2 mx-2 category-card border d-flex justify-content-center flex-column align-items-center"
-        >
-          <img width="50" height="50" src="images/icons/boy.png" alt="" />
-          <h4 class="mb-0 mt-2">For Kids</h4>
+        <div class="bg-primary py-4 ps-4">
+          <div class="d-flex align-items-center pe-5 border-end">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-boom-box-icon lucide-boom-box"><path d="M4 9V5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v4"/><path d="M8 8v1"/><path d="M12 8v1"/><path d="M16 8v1"/><rect width="20" height="12" x="2" y="9" rx="2"/><circle cx="8" cy="15" r="2"/><circle cx="16" cy="15" r="2"/></svg>
+            <p class="mb-0 ms-1 text-white">Speakers</p>
+          </div>
         </div>
-        <div
-          class="py-4 px-4 rounded-2 mx-2 category-card border d-flex justify-content-center flex-column align-items-center"
-        >
-          <img width="50" height="50" src="images/icons/boy.png" alt="" />
-          <h4 class="mb-0 mt-2">Courses</h4>
+        <div class="bg-primary py-4 ps-4">
+          <div class="d-flex align-items-center pe-5 ps-3">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-watch-icon lucide-watch"><circle cx="12" cy="12" r="6"/><polyline points="12 10 12 12 13 13"/><path d="m16.13 7.66-.81-4.05a2 2 0 0 0-2-1.61h-2.68a2 2 0 0 0-2 1.61l-.78 4.05"/><path d="m7.88 16.36.8 4a2 2 0 0 0 2 1.61h2.72a2 2 0 0 0 2-1.61l.81-4.05"/></svg>
+            <p class="mb-0 ms-1 text-white">Smart Watch</p>
+          </div>
         </div>
       </div>
     </section>
 
+    <!-- services section  -->
+    <div style="gap:32px" class="services-section pt-5 d-flex align-items-center bg-body-tertiary justify-content-center">
+        <div class="left w-25">
+          <img class="rounded-3" width="100%" src="https://i.pinimg.com/736x/d8/c8/06/d8c80615ce50ddced703b37c52b82c0a.jpg" alt="">
+        </div>
+        <div class="left d-flex flex-column w-25 align-items-start">
+          <h2>Choose <span class="text-accent">The Best</span> Repair Service</h2>
+          <p class="mb-3 py-3 text-muted">At iProtech, we do not just have quality products, we also offer fast, reliable, and affordable repairs for your essential devices. Whether it's a cracked phone screen or a slow laptop, we’re here to bring your gadgets back to life.</p>
+          <div class="d-flex">
+            <button class="btn btn-sm px-4 py-2 btn-secondary me-2 d-flex align-items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-phone-icon lucide-phone me-2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              Call Us
+            </button>
+            <button class="btn btn-sm px-4 py-2 btn-outline-secondary d-flex align-items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail-icon lucide-mail me-2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>Send an Email
+          </button>
+          </div>
+        </div>
+    </div>
+
     <!-- new product  -->
     <div
-      class="new-products-section bg-body-tertiary section-padding d-flex flex-column align-items-center justify-content-center"
+      style="padding-block:4.5rem"
+      class="new-products-section bg-body-tertiary d-flex flex-column align-items-center justify-content-center"
     >
       <h2 class="mb-2 fw-bold">
         Our <span class="text-primary">Newest</span> Products
@@ -249,9 +258,17 @@
       >
     </div>
 
+    <!-- brands section  -->
+    <div style="gap:12px; padding-bottom:4rem" class="d-flex align-items-center bg-body-tertiary">
+      <div class="container mx-auto d-flex flex-column align-items-center">
+        <img width="1190" src="images/promos.png" alt="">
+      </div> 
+    </div>
+
     <!-- TOP SELLERS  -->
     <div
-      class="new-products-section bg-body-tertiary section-padding d-flex flex-column align-items-center justify-content-center"
+      style="padding-bottom:5rem"
+      class="new-products-section bg-body-tertiary d-flex flex-column align-items-center justify-content-center"
     >
       <h2 class="mb-2 fw-bold">
         Top <span class="text-primary">Seller</span> Products
@@ -310,6 +327,14 @@
       <a href="products.php" class="btn bg-accent fw-semibold mt-5"
         >View Products</a
       >
+    </div>
+
+    <!-- brands section  -->
+    <div style="gap:12px; padding-bottom:8rem" class="d-flex align-items-center bg-body-tertiary">
+      <div class="container mx-auto d-flex flex-column align-items-center">
+        <h4 class="text-muted mb-4">Shop by Brands</h4>
+        <img width="1190" src="images/branfs.png" alt="">
+      </div> 
     </div>
 
     <!-- customer feedback  -->
@@ -440,17 +465,44 @@
 
     <!-- FOOTER  -->
     <footer
-      class="py-4 d-flex align-items-center justify-content-center bg-body-tertiary"
+      class="d-flex bg-body-tertiary"
     >
-      <div class="container d-flex align-items-center justify-content-between">
-        <h3 class="fw-bold text-muted d-flex align-items-center">
-          <img src="images/logo.png" width="50" height="50" alt="" />Digi<span
-            class="text-primary"
-            >Cart</span
-          >
-        </h3>
-        <p class="mb-0 text-secondary fw-bold">Mherafe Cabug@2025</p>
+      <div class="container d-flex align-items-center justify-content-between py-5">
+        <div>
+          <h3 class="fw-bold mb-0 text-muted d-flex align-items-center">
+            <img src="images/logo.png" width="40" height="40" alt="" />Digi<span
+              class="text-primary"
+              >Cart</span
+            >
+          </h3>
+        </div>
+
+        <div class="d-flex flex-column align-items-center">
+          <h5 class="border-bottom pb-3 text-muted fw-bold">Get In Touch With Us</h5>
+          <div style="gap:8px" class="d-flex align-items-center py-2">
+            <div class="border p-2 bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-facebook-icon lucide-facebook"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+            </div>
+
+            <div class="border p-2 bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail-icon lucide-mail"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            </div>
+
+            <div class="border p-2 bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-phone-icon lucide-phone"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            </div>
+            <div class="border p-2 bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin-icon lucide-map-pin"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="">
+          <p class="mb-0 fw-semibold text-secondary">All rights reserved</p>
+        </div>
       </div>
+
+
     </footer>
     <!-- bootstrap cdn -->
     <script
